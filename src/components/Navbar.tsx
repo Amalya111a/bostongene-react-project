@@ -37,6 +37,8 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 
 const Navbar = () => {
+  const user = localStorage.getItem("user");
+
   return (
     <nav style={styles.nav}>
       {/* Left side links */}
@@ -46,7 +48,8 @@ const Navbar = () => {
         <Link to="/conditions" style={styles.link}>Conditions</Link>
         <Link to="/clinics" style={styles.link}>Clinics</Link>
         <Link to="/products" style={styles.link}>Products</Link>
-        <Link to="/appointment" style={styles.link}>Appointment</Link>
+        { !user && <Link to="/appointment" style={styles.link}>Appointment</Link>}
+        {/* <Link to="/appointment" style={styles.link}>Appointment</Link> */}
       </div>
 
       {/* Right side AntD buttons */}
@@ -54,7 +57,7 @@ const Navbar = () => {
         <Link to="/Login">
           <Button type="primary">Sign In</Button>
         </Link>
-        <Link to="/regestration">
+        <Link to="/registration">
           <Button>Sign Up</Button>
         </Link>
       </div>

@@ -1,0 +1,29 @@
+.wrapper {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.item {
+  margin-bottom: 1.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  flex-direction: row;
+}
+
+.actions {
+  margin-top: 1rem;
+
+  .signup {
+    margin-top: 1rem;
+    text-align: center;
+
+    span {
+      margin-right: 0.5rem;
+    }
+  }
+}
