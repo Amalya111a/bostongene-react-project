@@ -8,6 +8,8 @@ import Appointment from '../pages/Appointment/Appointment';
 import Products from '../pages/Products/Products';
 import Conditions from '../pages/Conditions/Conditions';
 import Clinics from '../pages/Clinics/Clinics';
+import Regestration from '../pages/Regestration/Regestration';
+import Login from '../pages/Login/Login';
 
 
 const AppRoutes = () => (
@@ -18,6 +20,8 @@ const AppRoutes = () => (
     <Route path="/Products" element={<Products />} />
     <Route path="/Conditions" element={<Conditions />} />
     <Route path="/Clinics" element={<Clinics />} />
+    <Route path="/Regestration" element={<Regestration />} />
+    <Route path="/Login" element={<Login />} />
 
   </Routes>
   

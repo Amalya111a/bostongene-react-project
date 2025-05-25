@@ -1,0 +1,46 @@
+// .wrapper {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     flex-direction: column;
+//     gap: 10px;
+//     height: 100vh;
+//     width: 100%;
+// }
+
+
+// .item {
+//     display: flex;
+//     gap: 5px;
+//     flex-direction: column;
+//     min-width: 350px;
+//     span {
+//         text-align: start;
+//     }
+// }
+.wrapper {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.signup {
+  text-align: center;
+  font-size: 14px;
+}
