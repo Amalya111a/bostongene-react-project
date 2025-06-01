@@ -1,92 +1,117 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-
-// const Navbar = () => {
-//   return (
-//     <nav style={styles.nav}>
-//       <Link to="/" style={styles.link}>Home</Link>
-//       <Link to="/doctors" style={styles.link}>Doctors</Link>
-//       <Link to="/conditions" style={styles.link}>Conditions</Link>
-//       <Link to="/clinics" style={styles.link}>clinics</Link>
-//       <Link to="/products" style={styles.link}>Products</Link>
-//       <Link to="/appointment" style={styles.link}>Appointment</Link>
-//       <Link to="/regestration" style={styles.link}>Registration</Link>
-//       <Link to="/login" style={styles.link}>Login</Link>
-//     </nav>
-//   );
-// };
-
-// const styles = {
-//   nav: {
-//     padding: '10px',
-//     backgroundColor: '#f0f0f0',
-//     display: 'flex',
-//     gap: '10px',
-//     justifyContent: 'center'
-//   },
-//   link: {
-//     textDecoration: 'none',
-//     color: '#333',
-//     fontWeight: 'bold'
-//   }
-// };
-
-// export default Navbar;
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, Layout, Menu } from 'antd';
+import { LoginOutlined } from '@ant-design/icons';
 
-const Navbar = () => {
-  const user = localStorage.getItem("user");
+const { Header } = Layout;
 
+const Navbar: React.FC = () => {
   return (
-    <nav style={styles.nav}>
-      {/* Left side links */}
-      <div style={styles.left}>
-        <Link to="/" style={styles.link}>Home</Link>
-        <Link to="/doctors" style={styles.link}>Doctors</Link>
-        <Link to="/conditions" style={styles.link}>Conditions</Link>
-        <Link to="/clinics" style={styles.link}>Clinics</Link>
-        <Link to="/products" style={styles.link}>Products</Link>
-        { !user && <Link to="/appointment" style={styles.link}>Appointment</Link>}
-        {/* <Link to="/appointment" style={styles.link}>Appointment</Link> */}
-      </div>
+    <>
+      <Header style={styles.header}>
+        <div style={styles.leftSection}>
+          <Menu
+            mode="horizontal"
+            style={styles.menu}
+            selectable={false}
+            overflowedIndicator={<span style={{ fontSize: 18 }}>⋮</span>}
+          >
+            {['Home', 'Doctors', 'Conditions', 'Clinics', 'Products', 'Appointment'].map((text, i) => (
+              <Menu.Item key={i} style={styles.menuItem}>
+                <Link to={`/${text.toLowerCase()}`} style={styles.link}>
+                  {text}
+                </Link>
+              </Menu.Item>
+            ))}
+          </Menu>
+        </div>
+        <div style={styles.rightSection}>
+          <Link to="/login">
+            <Button
+              type="primary"
+              icon={<LoginOutlined />}
+              style={styles.loginButton}
+            >
+              Login
+            </Button>
+          </Link>
+        </div>
+      </Header>
 
-      {/* Right side AntD buttons */}
-      <div style={styles.right}>
-        <Link to="/Login">
-          <Button type="primary">Sign In</Button>
-        </Link>
-        <Link to="/registration">
-          <Button>Sign Up</Button>
-        </Link>
-      </div>
-    </nav>
+      {/* Add this style block in your app or global CSS */}
+      <style>{`
+        /* Pink text for menu links */
+        .ant-menu-horizontal > .ant-menu-item > a {
+          color:rgb(196, 22, 109) !important;
+          border-bottom: 2px solid transparent;
+          padding-bottom: 4px;
+          transition: border-color 0.3s ease;
+        }
+
+        /* Pink underline on hover */
+        .ant-menu-horizontal > .ant-menu-item:hover > a {
+          border-bottom-color:rgb(155, 13, 84) !important;
+        }
+
+        /* Optional: keep pink underline on active menu item */
+        .ant-menu-horizontal > .ant-menu-item-selected > a {
+          border-bottom-color:rgb(226, 57, 142) !important;
+        }
+      `}</style>
+    </>
   );
 };
 
-const styles = {
-  nav: {
-    padding: '10px 20px',
-    backgroundColor: '#f0f0f0',
+const styles: { [key: string]: React.CSSProperties } = {
+  header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-  } as React.CSSProperties,
-  left: {
+    background: 'linear-gradient(to right, rgba(235, 145, 190, 0.6),rgba(209, 34, 122, 0.74))',
+    padding: '0 30px',
+    height: 75,
+    boxShadow: '0 6px 12px rgba(0,0,0,0.1)',
+    zIndex: 5,
+    position: 'sticky',
+    top: 0,
+    borderRadius: 0,
+    margin: 0,
+  },
+  leftSection: {
+    flex: 1,
+  },
+  menu: {
+    backgroundColor: 'transparent',
+    borderBottom: 'none',
     display: 'flex',
-    gap: '10px',
-  } as React.CSSProperties,
-  right: {
-    display: 'flex',
-    gap: '10px',
-  } as React.CSSProperties,
+    gap: '12px',
+  },
+  menuItem: {
+    backgroundColor: 'transparent',
+    borderRadius: 12,
+    padding: '0 16px',
+    transition: 'all 0.3s ease',
+  },
   link: {
     textDecoration: 'none',
-    color: '#333',
-    fontWeight: 'bold',
-  } as React.CSSProperties,
+    fontWeight: 600,
+    fontSize: 16,
+    // no color here, CSS will handle it
+  },
+  rightSection: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  loginButton: {
+    backgroundColor: '#ff69b4',
+    borderColor: '#ff69b4',
+    color: '#fff',
+    fontWeight: 600,
+    borderRadius: 20,
+    padding: '0 20px',
+    height: 40,
+    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+  },
 };
 
 export default Navbar;
-

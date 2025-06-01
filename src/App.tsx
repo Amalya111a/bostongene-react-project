@@ -1,14 +1,19 @@
-import React from 'react';
-import AppRoutes from './routes/AppRoutes';
-import Navbar from './components/Navbar';
-import Conditions from './pages/Conditions/Conditions';
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
+import Navbar from "./components/Navbar";
+import AppFooter from "./components/Foooter";
+import "./App.css";
 
 const App = () => {
   return (
-    <>
+    <BrowserRouter>
       <Navbar />
-      <AppRoutes />
-    </>
+      <div>
+        <AppRoutes />
+      </div>
+      <AppFooter />
+    </BrowserRouter>
   );
 };
 
