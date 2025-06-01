@@ -1,0 +1,86 @@
+.clinics-container {
+  padding: 48px 24px;
+  min-height: 100vh;
+  background-color: #fae3ee;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center; /* centers inline elements inside */
+}
+
+.clinics-title {
+  font-weight: 900;
+  margin: 15px; 
+  font-size: 3rem;
+  user-select: none;
+  color: rgb(230, 109, 169) !important;
+}
+
+/* Clinic card styling */
+.clinic-card {
+  width: 400px !important;
+  margin: auto;
+  border-radius: 16px !important;
+  background-color: #fff;
+  box-shadow: 0 4px 14px rgba(214, 51, 132, 0.2);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.clinic-card:hover {
+  box-shadow: 0 15px 35px rgba(214, 51, 132, 0.35);
+  transform: translateY(-8px);
+}
+
+.clinic-image {
+  height: 280px;
+  object-fit: cover;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  user-select: none;
+  transition: all 0.6s ease-in-out;
+}
+
+.clinic-card:hover .clinic-image {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+/* Modal image */
+.modal-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  user-select: none;
+}
+
+/* Loading container styling */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .clinics-title {
+    font-size: 2rem;
+  }
+
+  .clinic-card {
+    width: 100% !important;
+  }
+
+  .clinic-image {
+    height: 220px;
+  }
+}
+
+/* Ant Design menu item hover override if needed */
+.ant-menu-item a:hover {
+  color: #d63384 !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 12px;
+}
