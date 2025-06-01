@@ -1,7 +1,11 @@
-export const fetchDoctors = async () => {
-    return [
-      { id: 1, name: 'Dr. Smith', specialty: 'Dermatology' },
-      { id: 2, name: 'Dr. Lee', specialty: 'Cosmetology' },
-    ];
-  };
-  
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchDoctors } from "../../services/doctorService";
+import type { DoctorsResponse } from "../../services/doctorService";
+
+export const fetchDoctorsThunk = createAsyncThunk<
+    DoctorsResponse,
+    { page: number; pageSize: number }
+>("doctors/fetchDoctors", async ({ page, pageSize }) => {
+    return await fetchDoctors(page, pageSize);
+});
+
