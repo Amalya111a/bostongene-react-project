@@ -9,8 +9,8 @@
 //       <Link to="/conditions" style={styles.link}>Conditions</Link>
 //       <Link to="/clinics" style={styles.link}>clinics</Link>
 //       <Link to="/products" style={styles.link}>Products</Link>
-//       <Link to="/appointment" style={styles.link}>Appontment</Link>
-//       <Link to="/regestration" style={styles.link}>Regestration</Link>
+//       <Link to="/appointment" style={styles.link}>Appointment</Link>
+//       <Link to="/regestration" style={styles.link}>Registration</Link>
 //       <Link to="/login" style={styles.link}>Login</Link>
 //     </nav>
 //   );
