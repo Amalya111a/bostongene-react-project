@@ -1,0 +1,140 @@
+/* Reset some default page spacing */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #f0f2f5; /* keep your app background consistent */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Main container */
+.homepage-container {
+  padding: 0 40px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  /* background-image: url('/images/clinic-hero.jpg'); */
+  background-size: cover;
+  background-position: center;
+  height: 420px;
+  border-radius: 20px;
+  margin: 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px; /* extra horizontal padding for smaller screens */
+  box-sizing: border-box;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(196, 22, 109, 0.6);
+  border-radius: 20px;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  color: white;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* About Section */
+.about-section {
+  margin-top: 40px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.about-image {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(196, 22, 109, 0.2);
+  height: auto;
+  object-fit: cover;
+  flex: 1 1 300px;
+}
+
+/* Services Section */
+.services-section {
+  margin-top: 60px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.services-section .ant-card {
+  box-shadow: 0 8px 20px rgba(209, 34, 122, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+.services-section .ant-card:hover {
+  box-shadow: 0 12px 28px rgba(226, 57, 142, 0.3);
+}
+
+/* Doctors Section */
+.doctors-section {
+  max-width: 960px;
+  margin: 60px auto 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.doctors-section .ant-card {
+  box-shadow: 0 8px 20px rgba(196, 22, 109, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+.doctors-section .ant-card:hover {
+  box-shadow: 0 12px 28px rgba(226, 57, 142, 0.3);
+}
+
+/* Price List Section */
+.price-list {
+  margin: 80px auto 120px;
+  max-width: 960px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Price Cards */
+.price-list .ant-card {
+  border-radius: 20px;
+  background: #e6f1eb;
+  box-shadow: 0 10px 24px rgba(17, 77, 77, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.price-list .ant-card:hover {
+  box-shadow: 0 12px 28px rgba(17, 77, 77, 0.2);
+}
+
+/* Utility for gutters on Ant Design Row */
+.ant-row {
+  margin-left: -12px; /* half gutter */
+  margin-right: -12px;
+}
+
+.ant-col {
+  padding-left: 12px;
+  padding-right: 12px;
+}

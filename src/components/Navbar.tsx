@@ -38,24 +38,21 @@ const Navbar: React.FC = () => {
         </div>
       </Header>
 
-      {/* Add this style block in your app or global CSS */}
+      {/* Inline style override */}
       <style>{`
-        /* Pink text for menu links */
         .ant-menu-horizontal > .ant-menu-item > a {
-          color:rgb(196, 22, 109) !important;
+          color: #014421 !important;
           border-bottom: 2px solid transparent;
           padding-bottom: 4px;
           transition: border-color 0.3s ease;
         }
 
-        /* Pink underline on hover */
         .ant-menu-horizontal > .ant-menu-item:hover > a {
-          border-bottom-color:rgb(155, 13, 84) !important;
+          border-bottom-color: #016936 !important;
         }
 
-        /* Optional: keep pink underline on active menu item */
         .ant-menu-horizontal > .ant-menu-item-selected > a {
-          border-bottom-color:rgb(226, 57, 142) !important;
+          border-bottom-color: #019149 !important;
         }
       `}</style>
     </>
@@ -67,7 +64,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    background: 'linear-gradient(to right, rgba(235, 145, 190, 0.6),rgba(209, 34, 122, 0.74))',
+    background: 'linear-gradient(to right, rgba(1, 68, 33, 0.8), rgba(1, 105, 54, 0.85))',
     padding: '0 30px',
     height: 75,
     boxShadow: '0 6px 12px rgba(0,0,0,0.1)',
@@ -96,15 +93,14 @@ const styles: { [key: string]: React.CSSProperties } = {
     textDecoration: 'none',
     fontWeight: 600,
     fontSize: 16,
-    // no color here, CSS will handle it
   },
   rightSection: {
     display: 'flex',
     alignItems: 'center',
   },
   loginButton: {
-    backgroundColor: '#ff69b4',
-    borderColor: '#ff69b4',
+    backgroundColor: '#016936',
+    borderColor: '#014421',
     color: '#fff',
     fontWeight: 600,
     borderRadius: 20,

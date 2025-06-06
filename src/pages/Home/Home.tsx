@@ -1,7 +1,24 @@
-import React from 'react';
+import React from "react";
+import DoctorsSection from "./DoctorsSection";
+import PriceListSection from "./PriceListSection";
+import AboutSection from "./AboutSection";
+import HeroSection from "./HeroSection";
+import ServicesSection from "./ServicesSection";
+import TestimonialSection from "./TestimonialsSection";
+import WhyChooseUsSection from "./WhyChooseUsSection";
 
 const Home = () => {
-  return <h1> Home page</h1>;
+  return (
+    <div style={{ background: "#f0f2f5", padding: "40px 20px" }}>
+      <HeroSection />
+      <DoctorsSection />
+      <TestimonialSection />
+      <ServicesSection />
+      <AboutSection />
+      <WhyChooseUsSection />
+      <PriceListSection />
+    </div>
+  );
 };
 
 export default Home;

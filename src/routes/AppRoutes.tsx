@@ -11,10 +11,10 @@ import Clinics from '../pages/Clinics/Clinics';
 import Registration from '../pages/Registration/Registration';
 import Login from '../pages/Login/Login';
 
-
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Home />} />
+    <Route path="/home" element={<Home />} />  {/* add this */}
     <Route path="/doctors" element={<Doctors />} />
     <Route path="/appointment" element={<Appointment />} />
     <Route path="/Products" element={<Products />} />
@@ -22,9 +22,8 @@ const AppRoutes = () => (
     <Route path="/Clinics" element={<Clinics />} />
     <Route path="/Registration" element={<Registration />} />
     <Route path="/Login" element={<Login />} />
-
   </Routes>
-  
 );
+
 
 export default AppRoutes;
