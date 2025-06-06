@@ -6,13 +6,19 @@ const response = await axios.get('/clinics.json');
   return response.data;
 });
 
-interface Clinic {
+export interface Clinic {
   id: number;
   name: string;
   address: string;
   phone?: string;
-  image?: string;  
+  image?: string;
+  hoverImage?: string;
+  email?: string;
+  website?: string;
+  description?: string;
+  category?: string;  // <-- added category
 }
+
 
 
 interface ClinicsState {

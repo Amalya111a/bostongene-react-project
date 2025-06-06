@@ -13,11 +13,11 @@ const { Text, Title } = Typography;
 const AppFooter: React.FC = () => {
   return (
     <Footer style={footerStyle}>
-      <Title level={4} style={{ color: '#f0e6f6', marginBottom: 7 }}>
+      <Title level={4} style={{ color: '#d1f7e1', marginBottom: 7 }}>
         Stay Connected with Skin & Health
       </Title>
 
-      <Text style={{ color: '#f0e6f6', fontSize: 16, marginBottom: 7, display: 'block' }}>
+      <Text style={{ color: '#a8d5ba', fontSize: 16, marginBottom: 7, display: 'block' }}>
         Your trusted partner in skincare and wellness. We help you look and feel your best every day.
       </Text>
 
@@ -36,14 +36,21 @@ const AppFooter: React.FC = () => {
         </a>
       </Space>
 
-      <Text style={{ color: '#f0e6f6', fontSize: 14 }}>
-        <br></br>
-        Contact us: <a href="mailto:info@skinhealth.com" style={{ color: '#f0e6f6', textDecoration: 'underline' }}>info@skinhealth.com</a> | Phone: +374 77 123456
+      <Text style={{ color: '#a8d5ba', fontSize: 14 }}>
+        <br />
+        Contact us:{" "}
+        <a
+          href="mailto:info@skinhealth.com"
+          style={{ color: '#d1f7e1', textDecoration: 'underline' }}
+        >
+          info@skinhealth.com
+        </a>{" "}
+        | Phone: +374 77 123456
       </Text>
 
       <br />
 
-      <Text style={{ color: '#f0e6f6', fontSize: 12 }}>
+      <Text style={{ color: '#87bda7', fontSize: 12 }}>
         © {new Date().getFullYear()} Skin & Health. All rights reserved.
       </Text>
     </Footer>
@@ -53,14 +60,14 @@ const AppFooter: React.FC = () => {
 const footerStyle: React.CSSProperties = {
   textAlign: 'center',
   background:
-    'linear-gradient(to right, rgba(235, 145, 190, 0.72), rgba(209, 34, 122, 0.74))',
+    'linear-gradient(to right, #003d29, #004d33)',
   padding: '40px 20px',
   userSelect: 'none',
 };
 
 const iconStyle: React.CSSProperties = {
   fontSize: 28,
-  color: '#f0e6f6',
+  color: '#b5f0d2',
   transition: 'color 0.3s ease',
   cursor: 'pointer',
 };

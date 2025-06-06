@@ -11,7 +11,9 @@ interface Clinic {
   email?: string;
   website?: string;
   description?: string;
+  category?: string;   // Add this line
 }
+
 
 const ClinicCard: React.FC<{ clinic: Clinic }> = ({ clinic }) => {
   const [modalVisible, setModalVisible] = useState(false);
