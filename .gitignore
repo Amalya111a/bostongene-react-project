@@ -25,3 +25,4 @@ yarn-error.log*
 # misc
 backend/.env
 backend/node_modules
+backend/package-lock.json
