@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../app/store';
 import { fetchClinics } from '../../features/clinics/clinicSlice';
 import { Typography, Row, Col, Spin, Alert, Button, Input } from 'antd';
-import { motion } from 'framer-motion';
 import ClinicCard from '../../components/Cliniccard';
 import './Clinics.css';
 
@@ -64,13 +63,7 @@ const filteredClinics = clinics.filter((clinic) => {
       <Row gutter={[24, 24]}>
         {filteredClinics.map((clinic) => (
           <Col key={clinic.id} xs={24} sm={12} md={8} lg={6}>
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
               <ClinicCard clinic={clinic} />
-            </motion.div>
           </Col>
         ))}
       </Row>
