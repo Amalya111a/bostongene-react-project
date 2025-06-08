@@ -1,11 +1,40 @@
+// src/components/Navbar.tsx
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Layout, Menu } from 'antd';
-import { LoginOutlined } from '@ant-design/icons';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for logout redirect
+import { Button, Layout, Menu, message } from 'antd'; // Import 'message' for notifications
+import { LoginOutlined, LogoutOutlined } from '@ant-design/icons'; // Import LogoutOutlined
+
+// --- REDUX IMPORTS ---
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../app/store'; // Adjust path to your store
+import { userLoggedOut } from '../features/auth/authSlice'; // Adjust path to your authSlice
+// --- FIREBASE IMPORTS ---
+import { auth } from '../firebase'; // Import auth instance for signOut
+import { signOut } from 'firebase/auth'; // Import signOut function
 
 const { Header } = Layout;
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+  const dispatch = useDispatch(); // Initialize useDispatch
+
+  // ***** THIS IS THE "EASY ACCESS" PART *****
+  // Get the isAuthenticated status directly from your Redux store
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  // *****************************************
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth); // Sign out from Firebase
+      message.success("Logged out successfully!");
+      dispatch(userLoggedOut()); // Update Redux state to logged out
+      navigate("/login"); // Redirect after logout
+    } catch (error: any) {
+      console.error("Logout failed:", error);
+      message.error("Logout failed: " + error.message);
+    }
+  };
+
   return (
     <>
       <Header style={styles.header}>
@@ -26,15 +55,30 @@ const Navbar: React.FC = () => {
           </Menu>
         </div>
         <div style={styles.rightSection}>
-          <Link to="/login">
+          {isAuthenticated ? (
+            // If isAuthenticated is true, show Sign Out button
+            <Link to="/Home">
             <Button
               type="primary"
-              icon={<LoginOutlined />}
+              icon={<LogoutOutlined />} // Use LogoutOutlined icon
               style={styles.loginButton}
+              onClick={handleSignOut}
             >
-              Login
+              Sign Out
             </Button>
-          </Link>
+            </Link>
+          ) : (
+            // If isAuthenticated is false, show Login button
+            <Link to="/login">
+              <Button
+                type="primary"
+                icon={<LoginOutlined />}
+                style={styles.loginButton}
+              >
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
       </Header>
 
