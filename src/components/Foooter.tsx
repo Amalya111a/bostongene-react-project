@@ -58,11 +58,12 @@ const AppFooter: React.FC = () => {
 };
 
 const footerStyle: React.CSSProperties = {
-  textAlign: 'center',
-  background:
-    'linear-gradient(to right, #003d29, #004d33)',
-  padding: '40px 20px',
-  userSelect: 'none',
+    textAlign: 'center',
+    background:
+        'linear-gradient(to right, #003d29, #004d33)',
+    padding: '40px 20px',
+    userSelect: 'none',
+
 };
 
 const iconStyle: React.CSSProperties = {

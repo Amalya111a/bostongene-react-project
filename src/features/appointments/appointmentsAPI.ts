@@ -1,6 +1,8 @@
-export const fetchAppointments = async () => {
-    return [
-      { id: 1, doctorId: 2, patientName: 'Anna', date: '2025-05-24' },
-    ];
-  };
+import {DOCTOR_API_URL} from "../../services/doctorService";
+export const getAppointments = async () => {
+    const res = await fetch(`${DOCTOR_API_URL}?action=getAppointments`);
+    const data = await res.json();
+    console.log(data);
+    return data.appointments;
+};
   

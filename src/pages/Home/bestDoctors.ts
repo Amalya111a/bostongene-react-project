@@ -19,7 +19,7 @@ export const bestDoctors: Doctor[] = [
     bio: "Specializes in minimally invasive cosmetic procedures.",
   },
   {
-    name: "Dr. Jhon Walker",
+    name: "Dr. ",
     photoUrl: "/images/doctors/Jhon.jpg",
     specialty: "Pediatric Dermatology",
     bio: "Dedicated to treating skin conditions in children.",
