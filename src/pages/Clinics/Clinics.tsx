@@ -1,52 +1,85 @@
-// src/pages/Clinics.tsx
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../../app/store';
-import { fetchClinics } from '../../features/clinics/clinicSlice';
 import { Typography, Row, Col, Spin, Alert, Button, Input } from 'antd';
-import { motion } from 'framer-motion';
-import ClinicCard from '../../components/Cliniccard';
+import Papa from 'papaparse';
+import ClinicCard from './ClinicCard';
 import './Clinics.css';
+import { Clinic } from './ClinicCard';
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
-const categories = ['All', 'Skin', 'Laser', 'Dental'];
+const categories = ['All', 'Skin', 'Laser'];
+
+const SHEET_CSV_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vT53CBkwjsN_ZWRBIZQfIjNh5LtfxXxTqO08QxUN1nAlwcZdKQcszP5bxvPDJgeOs-kJgNHyJ-dZAcH/pub?output=csv';
 
 const Clinics: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { data: clinics, loading, error } = useSelector((state: RootState) => state.clinics);
-
+  const [clinics, setClinics] = useState<Clinic[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    dispatch(fetchClinics());
-  }, [dispatch]);
+    setLoading(true);
+    setError(null);
 
-const filteredClinics = clinics.filter((clinic) => {
-  const matchCategory = selectedCategory === 'All' || (clinic.category && clinic.category === selectedCategory);
-  const matchSearch = clinic.name.toLowerCase().includes(searchTerm.toLowerCase());
-  return matchCategory && matchSearch;
-});
+    Papa.parse<Clinic>(SHEET_CSV_URL, {
+      download: true,
+      header: true,
+      complete: (results: Papa.ParseResult<Clinic>) => {
+        setClinics(results.data);
+        setLoading(false);
+      },
+      error: () => {
+        setError('Failed to load clinic data.');
+        setLoading(false);
+      },
+    });
+  }, []);
 
+  const filteredClinics = clinics.filter((clinic) => {
+    const search = searchTerm.toLowerCase();
+    const matchCategory =
+      selectedCategory === 'All' || clinic.category.toLowerCase() === selectedCategory.toLowerCase();
+    const matchSearch =
+      clinic.name.toLowerCase().includes(search) ||
+      clinic.address.toLowerCase().includes(search);
+    return matchCategory && matchSearch;
+  });
 
   if (loading)
-    return <div className="loading-container"><Spin size="large" tip="Loading clinics..." /></div>;
-  if (error) return <Alert type="error" message="Error" description={error} />;
+    return (
+      <div className="loading-container">
+        <Spin size="large" tip="Loading clinics..." />
+      </div>
+    );
+
+  if (error)
+    return (
+      <Alert
+        type="error"
+        message="Error"
+        description={error}
+        style={{ margin: '20px' }}
+      />
+    );
 
   return (
     <div className="clinics-container">
       <div className="clinics-hero">
-        <h1 className="clinics-hero-title">Բարի գալուստ Մեր Էսթետիկ Կենտրոններ</h1>
-        <p className="clinics-hero-subtitle">Բացահայտեք լավագույն կլինիկաները Հայաստանում՝ վստահությամբ և ոճով:</p>
+        <Title className="clinics-hero-title">Clinics We Collaborate With</Title>
+        <Paragraph className="clinics-hero-subtitle">
+          Discover top-rated clinics in dermatology and laser aesthetics.
+        </Paragraph>
       </div>
 
       <div className="clinics-controls">
         <Input
           className="search-input"
-          placeholder="Որոնել կլինիկա..."
+          placeholder="Search by name or address..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          allowClear
         />
         <div className="category-buttons">
           {categories.map((cat) => (
@@ -54,6 +87,14 @@ const filteredClinics = clinics.filter((clinic) => {
               key={cat}
               type={selectedCategory === cat ? 'primary' : 'default'}
               onClick={() => setSelectedCategory(cat)}
+              style={{
+                marginRight: 10,
+                borderRadius: 8,
+                backgroundColor: selectedCategory === cat ? '#14532D' : undefined,
+                borderColor: selectedCategory === cat ? '#14532D' : undefined,
+                color: selectedCategory === cat ? '#fff' : undefined,
+                fontWeight: selectedCategory === cat ? '600' : 'normal',
+              }}
             >
               {cat}
             </Button>
@@ -61,18 +102,23 @@ const filteredClinics = clinics.filter((clinic) => {
         </div>
       </div>
 
-      <Row gutter={[24, 24]}>
-        {filteredClinics.map((clinic) => (
-          <Col key={clinic.id} xs={24} sm={12} md={8} lg={6}>
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
+      <Row gutter={[32, 32]}>
+        {filteredClinics.length > 0 ? (
+          filteredClinics.map((clinic) => (
+            <Col key={clinic.id} xs={24} sm={24} md={12} lg={8} xl={6}>
               <ClinicCard clinic={clinic} />
-            </motion.div>
+            </Col>
+          ))
+        ) : (
+          <Col span={24}>
+            <Alert
+              message="No clinics found"
+              type="info"
+              showIcon
+              style={{ marginTop: 20 }}
+            />
           </Col>
-        ))}
+        )}
       </Row>
     </div>
   );
