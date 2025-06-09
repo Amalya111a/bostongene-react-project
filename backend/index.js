@@ -1,10 +1,12 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const { port } = require('./config');
 const askRouter = require('./routes/ask');
 
 const app = express();
 
+app.use(cors());
 app.use(morgan('combined'));
 app.use(express.json());
 

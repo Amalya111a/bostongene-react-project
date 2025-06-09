@@ -6,11 +6,13 @@ import HeroSection from "./HeroSection";
 import ServicesSection from "./ServicesSection";
 import TestimonialSection from "./TestimonialsSection";
 import WhyChooseUsSection from "./WhyChooseUsSection";
+import DiseaseChecker from "./DiseaseChecker";
 
 const Home = () => {
   return (
     <div style={{ background: "#f0f2f5", padding: "40px 20px" }}>
-      <HeroSection />
+      <DiseaseChecker />
+      {/* <HeroSection /> */}
       <DoctorsSection />
       <TestimonialSection />
       <ServicesSection />
