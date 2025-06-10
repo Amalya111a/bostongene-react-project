@@ -4,7 +4,13 @@ export interface Doctor {
     surname: string;
     workplace: string;
     specialty: string;
+    gender: string;
+    phoneNumber: string;
+    availableDays: string[];
     photo_url: string;
+    averageRating: number;
+    ratingCount: number;
+
 }
 export interface DoctorsResponse {
     data: Doctor[];
@@ -13,7 +19,7 @@ export interface DoctorsResponse {
     total: number;
     totalPages: number;
 }
-export const DOCTOR_API_URL = "https://script.google.com/macros/s/AKfycbzWiJ_kTF0sgNQK64kXBynWRiNBn9Q30zxKeLgXRU-wSo-GPUeGf3gzJbixVrkJz1bAEQ/exec";
+export const DOCTOR_API_URL = "https://script.google.com/macros/s/AKfycbxnTqlQzD0Er95GIK_-LE3_iysB32HQs_iku-Co2RtEAOr_XQObUT3VLYBJgexdrD-q/exec";
 export const fetchDoctors = async (
     page: number,
     pageSize: number

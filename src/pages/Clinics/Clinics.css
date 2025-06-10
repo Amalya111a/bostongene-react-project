@@ -1,0 +1,85 @@
+.clinics-container {
+  max-width: 1400px;
+  margin: 50px auto 70px;
+  padding: 0 24px;
+  font-family: 'Poppins', sans-serif;
+  color: #14532d;
+}
+
+.clinics-hero {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.clinics-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900 !important;
+  color: #14532d !important;
+  font-size: 3.8rem !important;
+  margin-bottom: 14px;
+  letter-spacing: 0.07em;
+  line-height: 1.1;
+  font-style: italic;
+}
+
+.clinics-hero-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.4rem !important;
+  color: #2f5d37 !important;
+  max-width: 700px;
+  margin: 0 auto;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.clinics-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.search-input {
+  border-radius: 10px !important;
+  border: 2px solid #14532d !important;
+  max-width: 320px;
+  box-shadow: none !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+.category-buttons > button {
+  min-width: 100px;
+  font-weight: 600;
+  border-radius: 10px !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.category-buttons > button:hover {
+  background-color: #14532d !important;
+  color: white !important;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 140px;
+}
+
+@media (max-width: 992px) {
+  .clinics-hero-title {
+    font-size: 3rem !important;
+  }
+  .clinics-hero-subtitle {
+    font-size: 1.2rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .clinics-controls {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

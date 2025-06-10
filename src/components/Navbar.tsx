@@ -1,92 +1,157 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-
-// const Navbar = () => {
-//   return (
-//     <nav style={styles.nav}>
-//       <Link to="/" style={styles.link}>Home</Link>
-//       <Link to="/doctors" style={styles.link}>Doctors</Link>
-//       <Link to="/conditions" style={styles.link}>Conditions</Link>
-//       <Link to="/clinics" style={styles.link}>clinics</Link>
-//       <Link to="/products" style={styles.link}>Products</Link>
-//       <Link to="/appointment" style={styles.link}>Appointment</Link>
-//       <Link to="/regestration" style={styles.link}>Registration</Link>
-//       <Link to="/login" style={styles.link}>Login</Link>
-//     </nav>
-//   );
-// };
-
-// const styles = {
-//   nav: {
-//     padding: '10px',
-//     backgroundColor: '#f0f0f0',
-//     display: 'flex',
-//     gap: '10px',
-//     justifyContent: 'center'
-//   },
-//   link: {
-//     textDecoration: 'none',
-//     color: '#333',
-//     fontWeight: 'bold'
-//   }
-// };
-
-// export default Navbar;
+// src/components/Navbar.tsx
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from 'antd';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for logout redirect
+import { Button, Layout, Menu, message } from 'antd'; // Import 'message' for notifications
+import { LoginOutlined, LogoutOutlined } from '@ant-design/icons'; // Import LogoutOutlined
 
-const Navbar = () => {
-  const user = localStorage.getItem("user");
+// --- REDUX IMPORTS ---
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../app/store'; // Adjust path to your store
+import { userLoggedOut } from '../features/auth/authSlice'; // Adjust path to your authSlice
+// --- FIREBASE IMPORTS ---
+import { auth } from '../firebase'; // Import auth instance for signOut
+import { signOut } from 'firebase/auth'; // Import signOut function
+
+const { Header } = Layout;
+
+const Navbar: React.FC = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+  const dispatch = useDispatch(); // Initialize useDispatch
+
+  // ***** THIS IS THE "EASY ACCESS" PART *****
+  // Get the isAuthenticated status directly from your Redux store
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  // *****************************************
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth); // Sign out from Firebase
+      message.success("Logged out successfully!");
+      dispatch(userLoggedOut()); // Update Redux state to logged out
+      navigate("/login"); // Redirect after logout
+    } catch (error: any) {
+      console.error("Logout failed:", error);
+      message.error("Logout failed: " + error.message);
+    }
+  };
 
   return (
-    <nav style={styles.nav}>
-      {/* Left side links */}
-      <div style={styles.left}>
-        <Link to="/" style={styles.link}>Home</Link>
-        <Link to="/doctors" style={styles.link}>Doctors</Link>
-        <Link to="/conditions" style={styles.link}>Conditions</Link>
-        <Link to="/clinics" style={styles.link}>Clinics</Link>
-        <Link to="/products" style={styles.link}>Products</Link>
-        { !user && <Link to="/appointment" style={styles.link}>Appointment</Link>}
-        {/* <Link to="/appointment" style={styles.link}>Appointment</Link> */}
-      </div>
+    <>
+      <Header style={styles.header}>
+        <div style={styles.leftSection}>
+          <Menu
+            mode="horizontal"
+            style={styles.menu}
+            selectable={false}
+            overflowedIndicator={<span style={{ fontSize: 18 }}>⋮</span>}
+          >
+            {['Home', 'Doctors', 'Conditions', 'Clinics', 'Products', 'Appointment'].map((text, i) => (
+              <Menu.Item key={i} style={styles.menuItem}>
+                <Link to={`/${text.toLowerCase()}`} style={styles.link}>
+                  {text}
+                </Link>
+              </Menu.Item>
+            ))}
+          </Menu>
+        </div>
+        <div style={styles.rightSection}>
+          {isAuthenticated ? (
+            // If isAuthenticated is true, show Sign Out button
+            <Link to="/Home">
+            <Button
+              type="primary"
+              icon={<LogoutOutlined />} // Use LogoutOutlined icon
+              style={styles.loginButton}
+              onClick={handleSignOut}
+            >
+              Sign Out
+            </Button>
+            </Link>
+          ) : (
+            // If isAuthenticated is false, show Login button
+            <Link to="/login">
+              <Button
+                type="primary"
+                icon={<LoginOutlined />}
+                style={styles.loginButton}
+              >
+                Login
+              </Button>
+            </Link>
+          )}
+        </div>
+      </Header>
 
-      {/* Right side AntD buttons */}
-      <div style={styles.right}>
-        <Link to="/Login">
-          <Button type="primary">Sign In</Button>
-        </Link>
-        <Link to="/registration">
-          <Button>Sign Up</Button>
-        </Link>
-      </div>
-    </nav>
+      {/* Inline style override */}
+      <style>{`
+        .ant-menu-horizontal > .ant-menu-item > a {
+          color: #014421 !important;
+          border-bottom: 2px solid transparent;
+          padding-bottom: 4px;
+          transition: border-color 0.3s ease;
+        }
+
+        .ant-menu-horizontal > .ant-menu-item:hover > a {
+          border-bottom-color: #016936 !important;
+        }
+
+        .ant-menu-horizontal > .ant-menu-item-selected > a {
+          border-bottom-color: #019149 !important;
+        }
+      `}</style>
+    </>
   );
 };
 
-const styles = {
-  nav: {
-    padding: '10px 20px',
-    backgroundColor: '#f0f0f0',
+const styles: { [key: string]: React.CSSProperties } = {
+  header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-  } as React.CSSProperties,
-  left: {
+    background: 'linear-gradient(to right, rgba(1, 68, 33, 0.8), rgba(1, 105, 54, 0.85))',
+    padding: '0 30px',
+    height: 75,
+    boxShadow: '0 6px 12px rgba(0,0,0,0.1)',
+    zIndex: 5,
+    position: 'sticky',
+    top: 0,
+    borderRadius: 0,
+    margin: 0,
+  },
+  leftSection: {
+    flex: 1,
+  },
+  menu: {
+    backgroundColor: 'transparent',
+    borderBottom: 'none',
     display: 'flex',
-    gap: '10px',
-  } as React.CSSProperties,
-  right: {
-    display: 'flex',
-    gap: '10px',
-  } as React.CSSProperties,
+    gap: '12px',
+  },
+  menuItem: {
+    backgroundColor: 'transparent',
+    borderRadius: 12,
+    padding: '0 16px',
+    transition: 'all 0.3s ease',
+  },
   link: {
     textDecoration: 'none',
-    color: '#333',
-    fontWeight: 'bold',
-  } as React.CSSProperties,
+    fontWeight: 600,
+    fontSize: 16,
+  },
+  rightSection: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  loginButton: {
+    backgroundColor: '#016936',
+    borderColor: '#014421',
+    color: '#fff',
+    fontWeight: 600,
+    borderRadius: 20,
+    padding: '0 20px',
+    height: 40,
+    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+  },
 };
 
 export default Navbar;
-
