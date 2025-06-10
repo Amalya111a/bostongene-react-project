@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
     Spin,
     Alert,
@@ -9,6 +10,7 @@ import {
     Button,
     Drawer,
     Pagination,
+    Input,
     Rate,
 } from "antd";
 import { fetchDoctorsThunk } from "../../features/doctors/doctorsAPI";
@@ -18,31 +20,30 @@ import {DOCTOR_API_URL} from "../../services/doctorService";
 import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
+// ... imports remain unchanged
+
 const Doctors = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
-    const { doctors, loading, error, total } = useSelector(
-        (state: RootState) => state.doctors
-    );
+    const { doctors, loading, error, total } = useSelector((state: RootState) => state.doctors);
+
+    const [searchTerm, setSearchTerm] = useState<string>("");
     const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
     const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
     const pageSize = 10;
 
-    // New states for rating input & submission loading
     const [userRating, setUserRating] = useState<number>(0);
     const [submittingRating, setSubmittingRating] = useState<boolean>(false);
 
     useEffect(() => {
         dispatch(fetchDoctorsThunk({ page, pageSize }));
     }, [dispatch, page]);
-    useEffect(() => {
-        console.log(user);
-    }, [user]);
+
     const handleSelectDoctor = (doctor: Doctor) => {
         setSelectedDoctor(doctor);
-        setUserRating(0); // reset rating input when drawer opens
+        setUserRating(0);
         setDrawerVisible(true);
     };
 
@@ -56,7 +57,6 @@ const Doctors = () => {
         setPage(page);
     };
 
-    // Submit rating handler
     const submitRating = async (doctorId: string) => {
         if (userRating === 0) {
             alert("Please select a rating before submitting");
@@ -66,18 +66,16 @@ const Doctors = () => {
         setSubmittingRating(true);
 
         try {
-            // <---- Put your fetch call here
             const response = await fetch(`${DOCTOR_API_URL}?action=rateDoctor`, {
                 method: "POST",
-                // headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ doctorId, rating: userRating, }),
+                body: JSON.stringify({ doctorId, rating: userRating }),
             });
 
             const data = await response.json();
 
             if (data.success) {
                 alert("Rating submitted!");
-                dispatch(fetchDoctorsThunk({ page, pageSize })); // refresh list to get updated ratings
+                dispatch(fetchDoctorsThunk({ page, pageSize }));
                 closeDrawer();
             } else {
                 alert("Failed to submit rating: " + data.message);
@@ -90,6 +88,13 @@ const Doctors = () => {
         }
     };
 
+    // 🔍 Filtering logic
+    const filteredDoctors = doctors.filter((doctor) =>
+        `${doctor.name} ${doctor.surname} ${doctor.specialty} ${doctor.workplace}`
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+    );
+
     if (loading)
         return (
             <Spin
@@ -97,6 +102,7 @@ const Doctors = () => {
                 style={{ marginTop: 50, textAlign: "center", width: "100%" }}
             />
         );
+
     if (error)
         return (
             <Alert message="Error" description={error} type="error" showIcon />
@@ -115,7 +121,6 @@ const Doctors = () => {
                 color: "#fff",
             }}
         >
-            {/* Background image overlay */}
             <div
                 style={{
                     position: "absolute",
@@ -132,8 +137,6 @@ const Doctors = () => {
                     borderRadius: 8,
                 }}
             />
-
-            {/* Content container */}
             <div style={{ position: "relative", zIndex: 1 }}>
                 <div
                     style={{
@@ -142,15 +145,19 @@ const Doctors = () => {
                         alignItems: "center",
                     }}
                 >
-                    <Title level={2} style={{ color: "#fff" }}>
-                        Doctors
-                    </Title>
-
+                    <Title level={2} style={{ color: "#fff" }}>Doctors</Title>
                 </div>
+
+                <Input
+                    placeholder="Search doctors by name, specialty, or workplace"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ marginBottom: 20 }}
+                />
 
                 <List
                     grid={{ gutter: 16, column: 3 }}
-                    dataSource={doctors}
+                    dataSource={filteredDoctors}
                     renderItem={(doctor) => (
                         <List.Item key={doctor.id}>
                             <div
@@ -191,7 +198,6 @@ const Doctors = () => {
                                     {doctor.workplace}
                                 </Text>
 
-                                {/* ⭐ Average Rating display */}
                                 <Rate
                                     allowHalf
                                     disabled
@@ -200,9 +206,7 @@ const Doctors = () => {
                                 />
                                 <Text style={{ fontSize: 12 }}>
                                     {doctor.ratingCount
-                                        ? `(${doctor.ratingCount} rating${
-                                            doctor.ratingCount > 1 ? "s" : ""
-                                        })`
+                                        ? `(${doctor.ratingCount} rating${doctor.ratingCount > 1 ? "s" : ""})`
                                         : "(No ratings yet)"}
                                 </Text>
                             </div>
@@ -233,19 +237,13 @@ const Doctors = () => {
                                 src={selectedDoctor.photo_url || undefined}
                                 style={{ marginBottom: 16 }}
                             >
-                                {!selectedDoctor.photo_url &&
-                                    selectedDoctor.name[0].toUpperCase()}
+                                {!selectedDoctor.photo_url && selectedDoctor.name[0].toUpperCase()}
                             </Avatar>
-                            <p>
-                                <Text strong>Specialty: </Text>
-                                {selectedDoctor.specialty}
-                            </p>
-                            <p>
-                                <Text strong>Workplace: </Text>
-                                {selectedDoctor.workplace}
-                            </p>
+                            <p><Text strong>Specialty: </Text>{selectedDoctor.specialty}</p>
+                            <p><Text strong>Workplace: </Text>{selectedDoctor.workplace}</p>
+                            <p><Text strong>Gender:</Text>{selectedDoctor.gender}</p>
+                            <p><Text strong>Available days: </Text>{selectedDoctor.availableDays}</p>
 
-                            {/* Show average rating inside drawer */}
                             <Rate
                                 allowHalf
                                 disabled
@@ -254,9 +252,7 @@ const Doctors = () => {
                             />
                             <Text style={{ fontSize: 12, display: "block", marginBottom: 16 }}>
                                 {selectedDoctor.ratingCount
-                                    ? `(${selectedDoctor.ratingCount} rating${
-                                        selectedDoctor.ratingCount > 1 ? "s" : ""
-                                    })`
+                                    ? `(${selectedDoctor.ratingCount} rating${selectedDoctor.ratingCount > 1 ? "s" : ""})`
                                     : "(No ratings yet)"}
                             </Text>
 
@@ -282,7 +278,9 @@ const Doctors = () => {
                                     <Button
                                         style={{ marginTop: 12 }}
                                         onClick={() =>
-                                            navigate("/appointmentPage", { state: { doctor: selectedDoctor } })
+                                            navigate("/appointmentPage", {
+                                                state: { doctor: selectedDoctor },
+                                            })
                                         }
                                         type="primary"
                                     >
