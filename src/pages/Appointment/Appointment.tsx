@@ -15,7 +15,6 @@ const Appointment = () => {
 
   const [loading, setLoading] = useState(false);
   const onFinish = async (values: any) => {
-    console.log(values.phoneNumber);
     const payload = {
       doctorId: doctor?.id,
       doctorName:`${doctor?.name} ${doctor?.surname}`,

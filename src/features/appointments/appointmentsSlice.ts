@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { submitAppointment } from "../../services/appointmentService";
 import {getAppointments} from "./appointmentsAPI";
 
-interface Appointment {
+ export interface Appointment {
   doctorId: string;
   doctorName: string;
   patientEmail: string;
@@ -12,6 +12,10 @@ interface Appointment {
   time: string;
   userId?: string;
   notes: string | null | undefined;
+    id?: number;
+    specialty?: string;
+    workplace?: string;
+    status?: 'upcoming' | 'completed' | 'cancelled';
 }
 
 interface AppointmentState {

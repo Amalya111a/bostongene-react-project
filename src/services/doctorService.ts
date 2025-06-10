@@ -4,6 +4,9 @@ export interface Doctor {
     surname: string;
     workplace: string;
     specialty: string;
+    gender: string;
+    phoneNumber: string;
+    availableDays: string[];
     photo_url: string;
     averageRating: number;
     ratingCount: number;
