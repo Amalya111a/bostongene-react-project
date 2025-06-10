@@ -1,7 +1,10 @@
-export const fetchProducts = async () => {
-    return [
-      { id: 1, name: 'Cream', price: 10 },
-      { id: 2, name: 'Serum', price: 20 },
-    ];
-  };
-  
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchProducts } from "../../services/productService";
+import type { Product } from "../../services/productService";
+
+export const fetchProductsThunk = createAsyncThunk<Product[]>(
+  "products/fetchProducts",
+  async () => {
+    return await fetchProducts();
+  }
+);
