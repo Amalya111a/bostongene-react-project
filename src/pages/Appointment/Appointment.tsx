@@ -1,24 +1,29 @@
 import React, {useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
+import {useSelector} from "react-redux";
 import {Card,Typography,Form,Input,DatePicker,TimePicker,Button,message} from "antd";
 import dayjs from 'dayjs';
 import{submitAppointment} from "../../services/appointmentService";
+import {RootState} from "../../app/store";
 
 const {Title,Text} = Typography;
 const Appointment = () => {
+  const {user} = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const location = useLocation();
   const doctor = location.state?.doctor;
 
   const [loading, setLoading] = useState(false);
   const onFinish = async (values: any) => {
+    console.log(values.phoneNumber);
     const payload = {
       doctorId: doctor?.id,
       doctorName:`${doctor?.name} ${doctor?.surname}`,
-      patientName: values.patientName,
+      patientEmail: user!.email,
       phoneNumber: values.phoneNumber,
       date: values.date.format('YYYY-MM-DD'),
       time: values.time.format('HH:mm'),
+      notes: values.notes,
     };
     try {
       setLoading(true);
@@ -40,10 +45,10 @@ const Appointment = () => {
           <Title level={3}>Book Appointment with {doctor.name} {doctor.surname}</Title>
 
           <Form layout="vertical" onFinish={onFinish}>
-            <Form.Item label="Your Name" name = "patientName" rules={[{ required: true, message: "Please enter your name" }]}>
-              <Input/>
+            <Form.Item label="Notes" name="notes"  >
+              <Input placeholder="Description"/>
             </Form.Item>
-            <Form.Item label= "Phone Number" name= "phone" rules={[{required:true}]}>
+            <Form.Item label= "Phone Number" name="phoneNumber" rules={[{required:true}]}>
               <Input/>
             </Form.Item>
             <Form.Item label="Appointment Date" name="date" rules={[{required:true}]}>
