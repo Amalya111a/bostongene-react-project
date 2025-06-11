@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface User {
   uid: string;
-  email?: string;
+  email?: string | null;
+  displayName?: string | null;
   // ավելացրու ուրիշ օգտվողի տվյալներ, եթե պետք լինի
 }
 

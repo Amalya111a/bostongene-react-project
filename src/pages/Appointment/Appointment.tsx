@@ -18,7 +18,7 @@ const Appointment = () => {
     const payload = {
       doctorId: doctor?.id,
       doctorName:`${doctor?.name} ${doctor?.surname}`,
-      patientEmail: user!.email,
+      patientEmail: user!.email ?? null,
       phoneNumber: values.phoneNumber,
       date: values.date.format('YYYY-MM-DD'),
       time: values.time.format('HH:mm'),

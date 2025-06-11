@@ -10,7 +10,7 @@ export interface Product {
   }
   
   export const Product_API_URL =
-    "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiTRHPNDuOpwhK5GHq1LrQcT9ptOhbuH5l1NAf6cspfJc_-ke5P6N-nGPzh8zYmcV_yyKTZmPxcg3XJXvRXh2on40OkHEkNzgzgQa6YeBcJELFU3QHcPtvvg0e_Zx3IfuDV34lgXqU9vByuOeRDGQ5Fipfz_ESgm1jkK-zNyp_naD-_jAAVJq3ClQP_2vn2o_p7J2lMPswyA1u_Wk_hRpmkvRZ1cnDU22KQfoLBul4BbiPhjsc9gyEPwfLQ7NzMF1AODXjTAQ_kLZJROIQ1mtLAbMhBzw&lib=MSDSjCNPbr45EoEPhh-RmkEX2Nb-b482m";
+    "https://script.google.com/macros/s/AKfycbwwZwuILqbxVAOKTf_U8NZ316p7IsT8J-It4sc24a1-7PomlFGOBBCCAQVENSbP8LAp/exec";
   
   export const fetchProducts = async (): Promise<Product[]> => {
     const response = await fetch(Product_API_URL);

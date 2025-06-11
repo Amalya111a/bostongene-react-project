@@ -10,6 +10,7 @@ export interface Product {
   image: string;
   rating?: number;
   info: string;
+  isOpen?: boolean; // Նոր դաշտ՝ Cart-ի բաց լինելու համար
 }
 
 interface ProductsState {
@@ -17,6 +18,7 @@ interface ProductsState {
   loading: boolean;
   error: string | null;
   searchTerm: string;
+  isOpen: boolean; // Ուղղվել է `false` արժեքից `boolean` տիպի
 }
 
 const initialState: ProductsState = {
@@ -24,6 +26,7 @@ const initialState: ProductsState = {
   loading: false,
   error: null,
   searchTerm: "",
+  isOpen: false,
 };
 
 export const loadProducts = createAsyncThunk("products/loadProducts", async () => {
@@ -38,6 +41,12 @@ const productsSlice = createSlice({
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
     },
+    toggleCart: (state) => {
+      state.isOpen = !state.isOpen;
+    },
+    setCartOpen: (state, action: PayloadAction<boolean>) => {
+      state.isOpen = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -47,6 +56,7 @@ const productsSlice = createSlice({
       })
       .addCase(loadProducts.fulfilled, (state, action) => {
         state.loading = false;
+        state.isOpen = true;
         state.products = action.payload;
       })
       .addCase(loadProducts.rejected, (state, action) => {
@@ -56,6 +66,5 @@ const productsSlice = createSlice({
   },
 });
 
-export const { setSearchTerm } = productsSlice.actions;
-
+export const { setSearchTerm, toggleCart, setCartOpen } = productsSlice.actions;
 export default productsSlice.reducer;
