@@ -80,25 +80,44 @@ const Products = () => {
     }
   };
   
-  const handleRatingChange = async (productId: number, rating: number) => {
-    try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbwwZwuILqbxVAOKTf_U8NZ316p7IsT8J-It4sc24a1-7PomlFGOBBCCAQVENSbP8LAp/exec", {
+  const [submittingRating, setSubmittingRating] = useState(false);
+
+const handleRatingChange = async (productId: number, rating: number) => {
+  if (rating === 0) {
+    message.warning("Please select a rating before submitting");
+    return;
+  }
+
+  setSubmittingRating(true);
+
+  try {
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbw37rwT1_bq5PoYTLkW5RMPSrgKVAm_vXx1zTfmXui2Sy5r3IodivysGXiwuGWJ8jI5/exec",
+      {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ productId, rating }),
-      });
-
-      const text = await response.text();
-      const data = JSON.parse(text);
-      if (response.ok) {
-        message.success("Thanks for your rating!");
-      } else {
-        message.error("Failed to submit rating.");
       }
-    } catch (error: any) {
-      message.error("Rating error: " + error.message);
+    );
+
+    const text = await response.text();
+    const data = JSON.parse(text);
+
+    if (response.ok && data.success) {
+      message.success("Thanks for your rating!");
+      // Optionally reload products or update rating here
+      dispatch(loadProducts()); // Reload products to get updated ratings
+    } else {
+      message.error("Failed to submit rating: " + (data.message || "Unknown error"));
     }
-  };
+  } catch (error: any) {
+    message.error("Network error submitting rating: " + error.message);
+    console.error(error);
+  } finally {
+    setSubmittingRating(false);
+  }
+};
+
 
   if (loading) return <Spin size="large" />;
   if (error) return <Alert message={error} type="error" />;
