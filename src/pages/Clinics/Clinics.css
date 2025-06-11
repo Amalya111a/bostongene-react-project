@@ -42,19 +42,16 @@
 }
 
 .search-input {
-  border-radius: 10px !important;
-  border: 2px solid #14532d !important;
-  max-width: 320px;
-  box-shadow: none !important;
-  font-family: 'Poppins', sans-serif;
+  border: 2px solid #14532d5d; /* Deep green border */
+  max-width: 700px;          /* Limits the input width */
 }
 
 .category-buttons > button {
-  min-width: 100px;
-  font-weight: 600;
-  border-radius: 10px !important;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  font-family: 'Poppins', sans-serif;
+  min-width: 170px;          /* Ensures buttons aren’t too small */
+  font-weight: 600;          /* Semi-bold text */
+  border-radius: 10px green; /* Rounded corners, !important to override */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover/focus effects */
+  font-family: 'Poppins', sans-serif; /* Stylish sans-serif font */
 }
 
 .category-buttons > button:hover {

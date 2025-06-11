@@ -99,25 +99,24 @@ const Doctors = () => {
   };
 
   // Client-side filtering by specialty and searchTerm
-// Filtering doctors by searchTerm and specialty
-const filteredDoctors = doctors.filter((doctor) => {
-  const combined = `${doctor.name} ${doctor.surname} ${doctor.specialty} ${doctor.workplace}`.toLowerCase();
-  const matchesSearch = combined.includes(searchTerm.toLowerCase());
-  const matchesSpecialty = specialtyFilter
-    ? doctor.specialty.toLowerCase().includes(specialtyFilter.toLowerCase())
-    : true;
+  const filteredDoctors = doctors.filter((doctor) => {
+    const combined = `${doctor.name} ${doctor.surname} ${doctor.specialty} ${doctor.workplace}`.toLowerCase();
+    const matchesSearch = combined.includes(searchTerm.toLowerCase());
+    const matchesSpecialty = specialtyFilter
+      ? doctor.specialty.toLowerCase().includes(specialtyFilter.toLowerCase())
+      : true;
 
-  return matchesSearch && matchesSpecialty;
-});
+    return matchesSearch && matchesSpecialty;
+  });
 
-// Pagination: slice filteredDoctors by current page and pageSize
-const totalFiltered = filteredDoctors.length;
-const startIndex = (page - 1) * pageSize;
-const pagedDoctors = filteredDoctors.slice(startIndex, startIndex + pageSize);
+  // Pagination: slice filteredDoctors by current page and pageSize
+  const totalFiltered = filteredDoctors.length;
+  const startIndex = (page - 1) * pageSize;
+  const pagedDoctors = filteredDoctors.slice(startIndex, startIndex + pageSize);
 
-useEffect(() => {
-  setPage(1);
-}, [specialtyFilter]);
+  useEffect(() => {
+    setPage(1);
+  }, [specialtyFilter]);
 
   if (loading)
     return (
@@ -133,7 +132,11 @@ useEffect(() => {
   return (
     <div className="doctors-page">
       <div className="content">
-        <Title level={2} style={{ color: "#d1e7c2", marginBottom: 20 }}>
+        <Title
+          level={2}
+          className="doctor-title"
+          style={{ color: "#d1e7c2", marginBottom: 20 }}
+        >
           Doctors
         </Title>
 
@@ -142,7 +145,7 @@ useEffect(() => {
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            setPage(1); // Reset to first page on new search
+            setPage(1);
           }}
           allowClear
           className="search-input"
@@ -170,29 +173,7 @@ useEffect(() => {
           dataSource={pagedDoctors}
           renderItem={(doctor) => (
             <List.Item key={doctor.id}>
-              <div
-                onClick={() => handleSelectDoctor(doctor)}
-                style={{
-                  cursor: "pointer",
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                  padding: 16,
-                  borderRadius: 8,
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                  color: "#fff",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                  transition: "background-color 0.3s ease",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.2)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.1)")
-                }
-              >
+              <div onClick={() => handleSelectDoctor(doctor)} className="doctor-card">
                 <Avatar
                   size={150}
                   src={doctor.photo_url || undefined}
@@ -216,9 +197,7 @@ useEffect(() => {
                 />
                 <Text style={{ fontSize: 12 }}>
                   {doctor.ratingCount
-                    ? `(${doctor.ratingCount} rating${
-                        doctor.ratingCount > 1 ? "s" : ""
-                      })`
+                    ? `(${doctor.ratingCount} rating${doctor.ratingCount > 1 ? "s" : ""})`
                     : "(No ratings yet)"}
                 </Text>
               </div>
@@ -238,9 +217,7 @@ useEffect(() => {
 
         <Drawer
           className="doctor-drawer"
-          title={
-            selectedDoctor ? `${selectedDoctor.name} ${selectedDoctor.surname}` : ""
-          }
+          title={selectedDoctor ? `${selectedDoctor.name} ${selectedDoctor.surname}` : ""}
           placement="right"
           width={400}
           onClose={closeDrawer}
@@ -279,37 +256,54 @@ useEffect(() => {
               />
               <Text style={{ fontSize: 12, display: "block", marginBottom: 16 }}>
                 {selectedDoctor.ratingCount
-                  ? `(${selectedDoctor.ratingCount} rating${
-                      selectedDoctor.ratingCount > 1 ? "s" : ""
-                    })`
+                  ? `(${selectedDoctor.ratingCount} rating${selectedDoctor.ratingCount > 1 ? "s" : ""})`
                   : "(No ratings yet)"}
               </Text>
+{isAuthenticated ? (
+  <>
+    <Text strong>Your Rating:</Text>
+    <Rate
+      allowHalf
+      value={userRating}
+      onChange={setUserRating}
+      style={{ marginBottom: 16 }}
+    />
+    <Button
+      type="primary"
+      onClick={() => submitRating(selectedDoctor.id)}
+      loading={submittingRating}
+      disabled={userRating === 0}
+      block
+    >
+      Submit Rating
+    </Button>
 
-              {isAuthenticated ? (
-                <>
-                  <Text strong>Your Rating:</Text>
-                  <Rate
-                    allowHalf
-                    value={userRating}
-                    onChange={setUserRating}
-                    style={{ marginBottom: 16 }}
-                  />
-                  <Button
-                    type="primary"
-                    onClick={() => submitRating(selectedDoctor.id)}
-                    loading={submittingRating}
-                    disabled={userRating === 0}
-                    block
-                  >
-                    Submit Rating
-                  </Button>
-                </>
+<Button
+  onClick={() => navigate('/appointment', { state: { doctor: selectedDoctor } })}
+  style={{ marginTop: 12 }}
+  block
+>
+  Appointment
+</Button>
+  </>
+
               ) : (
-                <Alert
-                  message="You must be logged in to rate doctors."
-                  type="info"
-                  showIcon
-                />
+                <div style={{ marginTop: 16 }}>
+                  <Alert
+                    message="You need to be logged in to rate or make an appointment with this doctor."
+                    type="info"
+                    showIcon
+                    action={
+                      <Button
+                        size="small"
+                        type="primary"
+                        onClick={() => navigate("/login", { state: { from: "/doctors" } })}
+                      >
+                        Log in
+                      </Button>
+                    }
+                  />
+                </div>
               )}
             </>
           )}
