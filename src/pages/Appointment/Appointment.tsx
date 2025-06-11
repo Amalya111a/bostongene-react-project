@@ -5,6 +5,7 @@ import {Card,Typography,Form,Input,DatePicker,TimePicker,Button,message} from "a
 import dayjs from 'dayjs';
 import{submitAppointment} from "../../services/appointmentService";
 import {RootState} from "../../app/store";
+import {DOCTOR_API_URL} from "../../services/doctorService";
 
 const {Title,Text} = Typography;
 const Appointment = () => {
@@ -12,6 +13,7 @@ const Appointment = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const doctor = location.state?.doctor;
+  const unavaibleTimes = fetch(DOCTOR_API_URL)
 
   const [loading, setLoading] = useState(false);
   const onFinish = async (values: any) => {
@@ -51,7 +53,16 @@ const Appointment = () => {
               <Input/>
             </Form.Item>
             <Form.Item label="Appointment Date" name="date" rules={[{required:true}]}>
-              <DatePicker style={{width:'100%'}} disabledDate={(current) => current && current < dayjs().startOf('day')}/>
+              <DatePicker
+                  style={{ width: '100%' }}
+                  disabledDate={(current) => {
+                    // Disable past dates
+                    const isPast = current && current < dayjs().startOf('day');
+                    // Disable Saturday (6) and Sunday (0)
+                    const isWeekend = current && (current.day() === 0 || current.day() === 6);
+                    return isPast || isWeekend;
+                  }}
+              />
             </Form.Item>
             <Form.Item label="Time" name="time" rules={[{required:true}]}>
               <TimePicker style={{width:'100%'}} minuteStep={15} format="HH:mm" />

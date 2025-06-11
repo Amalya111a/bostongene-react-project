@@ -1,6 +1,6 @@
-// src/pages/Doctors.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   Spin,
@@ -19,7 +19,6 @@ import { fetchDoctorsThunk } from "../../features/doctors/doctorsAPI";
 import type { RootState, AppDispatch } from "../../app/store";
 import type { Doctor } from "../../services/doctorService";
 import { DOCTOR_API_URL } from "../../services/doctorService";
-import { useNavigate } from "react-router-dom";
 
 import "./Doctors.css";
 
@@ -27,9 +26,10 @@ const { Title, Text } = Typography;
 
 const Doctors = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-  const { doctors, loading, error, total } = useSelector(
+  const { doctors, loading, error } = useSelector(
     (state: RootState) => state.doctors
   );
 
@@ -42,9 +42,14 @@ const Doctors = () => {
   const [userRating, setUserRating] = useState<number>(0);
   const [submittingRating, setSubmittingRating] = useState<boolean>(false);
 
+  // Get specialty filter from URL query param
+  const query = new URLSearchParams(location.search);
+  const specialtyFilter = query.get("specialty") || "";
+
+  // Fetch ALL doctors on mount (fetch page=1, pageSize very large)
   useEffect(() => {
-    dispatch(fetchDoctorsThunk({ page, pageSize }));
-  }, [dispatch, page]);
+    dispatch(fetchDoctorsThunk({ page: 1, pageSize: 1000 }));
+  }, [dispatch]);
 
   const handleSelectDoctor = (doctor: Doctor) => {
     setSelectedDoctor(doctor);
@@ -80,7 +85,7 @@ const Doctors = () => {
 
       if (data.success) {
         alert("Rating submitted!");
-        dispatch(fetchDoctorsThunk({ page, pageSize }));
+        dispatch(fetchDoctorsThunk({ page: 1, pageSize: 1000 }));
         closeDrawer();
       } else {
         alert("Failed to submit rating: " + data.message);
@@ -93,12 +98,26 @@ const Doctors = () => {
     }
   };
 
-  // Filtering logic
-  const filteredDoctors = doctors.filter((doctor) =>
-    `${doctor.name} ${doctor.surname} ${doctor.specialty} ${doctor.workplace}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  // Client-side filtering by specialty and searchTerm
+// Filtering doctors by searchTerm and specialty
+const filteredDoctors = doctors.filter((doctor) => {
+  const combined = `${doctor.name} ${doctor.surname} ${doctor.specialty} ${doctor.workplace}`.toLowerCase();
+  const matchesSearch = combined.includes(searchTerm.toLowerCase());
+  const matchesSpecialty = specialtyFilter
+    ? doctor.specialty.toLowerCase().includes(specialtyFilter.toLowerCase())
+    : true;
+
+  return matchesSearch && matchesSpecialty;
+});
+
+// Pagination: slice filteredDoctors by current page and pageSize
+const totalFiltered = filteredDoctors.length;
+const startIndex = (page - 1) * pageSize;
+const pagedDoctors = filteredDoctors.slice(startIndex, startIndex + pageSize);
+
+useEffect(() => {
+  setPage(1);
+}, [specialtyFilter]);
 
   if (loading)
     return (
@@ -108,7 +127,8 @@ const Doctors = () => {
       />
     );
 
-  if (error) return <Alert message="Error" description={error} type="error" showIcon />;
+  if (error)
+    return <Alert message="Error" description={error} type="error" showIcon />;
 
   return (
     <div className="doctors-page">
@@ -120,19 +140,58 @@ const Doctors = () => {
         <Input
           placeholder="Search doctors by name, specialty, or workplace"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setPage(1); // Reset to first page on new search
+          }}
           allowClear
           className="search-input"
         />
 
+        {/* Show specialty filter message with clear filter button */}
+        {specialtyFilter && (
+          <div style={{ marginTop: 12, marginBottom: 16, color: "#d1e7c2" }}>
+            Filtering by specialty: <strong>{specialtyFilter}</strong>{" "}
+            <Button
+              size="small"
+              onClick={() => {
+                navigate("/doctors");
+                setPage(1);
+              }}
+              style={{ marginLeft: 8 }}
+            >
+              Clear Filter
+            </Button>
+          </div>
+        )}
+
         <List
           grid={{ gutter: 16, column: 3 }}
-          dataSource={filteredDoctors}
+          dataSource={pagedDoctors}
           renderItem={(doctor) => (
             <List.Item key={doctor.id}>
               <div
-                className="doctor-card"
                 onClick={() => handleSelectDoctor(doctor)}
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  padding: 16,
+                  borderRadius: 8,
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                  color: "#fff",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                  transition: "background-color 0.3s ease",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.2)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.1)")
+                }
               >
                 <Avatar
                   size={150}
@@ -157,7 +216,9 @@ const Doctors = () => {
                 />
                 <Text style={{ fontSize: 12 }}>
                   {doctor.ratingCount
-                    ? `(${doctor.ratingCount} rating${doctor.ratingCount > 1 ? "s" : ""})`
+                    ? `(${doctor.ratingCount} rating${
+                        doctor.ratingCount > 1 ? "s" : ""
+                      })`
                     : "(No ratings yet)"}
                 </Text>
               </div>
@@ -168,7 +229,7 @@ const Doctors = () => {
         <Pagination
           current={page}
           pageSize={pageSize}
-          total={total}
+          total={totalFiltered}
           onChange={onPageChange}
           style={{ marginTop: 24, justifyContent: "center" }}
           showSizeChanger={false}
@@ -192,8 +253,7 @@ const Doctors = () => {
                 src={selectedDoctor.photo_url || undefined}
                 style={{ marginBottom: 16 }}
               >
-                {!selectedDoctor.photo_url &&
-                  selectedDoctor.name[0].toUpperCase()}
+                {!selectedDoctor.photo_url && selectedDoctor.name[0].toUpperCase()}
               </Avatar>
               <p>
                 <Text strong>Specialty: </Text>
@@ -204,8 +264,7 @@ const Doctors = () => {
                 {selectedDoctor.workplace}
               </p>
               <p>
-                <Text strong>Gender:</Text>
-                {selectedDoctor.gender}
+                <Text strong>Gender:</Text> {selectedDoctor.gender}
               </p>
               <p>
                 <Text strong>Available days: </Text>
@@ -233,34 +292,24 @@ const Doctors = () => {
                     allowHalf
                     value={userRating}
                     onChange={setUserRating}
-                    style={{ marginBottom: 12, color: "#a6d785" }}
+                    style={{ marginBottom: 16 }}
                   />
                   <Button
                     type="primary"
-                    loading={submittingRating}
                     onClick={() => submitRating(selectedDoctor.id)}
-                    disabled={userRating === 0 || submittingRating}
+                    loading={submittingRating}
+                    disabled={userRating === 0}
                     block
                   >
                     Submit Rating
                   </Button>
-
-                  <Button
-                    style={{ marginTop: 12 }}
-                    onClick={() =>
-                      navigate("/appointmentPage", {
-                        state: { doctor: selectedDoctor },
-                      })
-                    }
-                    type="primary"
-                  >
-                    Book Appointment
-                  </Button>
                 </>
               ) : (
-                <Button onClick={() => navigate("/login")} type="primary" danger block>
-                  Login to Book Appointment & Rate
-                </Button>
+                <Alert
+                  message="You must be logged in to rate doctors."
+                  type="info"
+                  showIcon
+                />
               )}
             </>
           )}

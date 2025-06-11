@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="fc938401-8262-4fdb-a31f-f39ca1aa9148" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/appointments/appointmentsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/appointments/appointmentsSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Appointment/Appointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Appointment/Appointment.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Appointment/AppointmentsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Appointment/AppointmentsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Conditions/Conditions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Conditions/Conditions.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Doctors/Doctors.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Doctors/Doctors.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,7 +30,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "doctors",
+    "git-widget-placeholder": "master",
     "last_opened_file_path": "C:/Users/mnact/Desktop/bostongene-react-project",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",

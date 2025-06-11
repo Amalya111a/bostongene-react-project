@@ -13,7 +13,7 @@ type Props = {
 
 const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 const scriptUrl =
-  "https://script.google.com/macros/s/AKfycbwwZwuILqbxVAOKTf_U8NZ316p7IsT8J-It4sc24a1-7PomlFGOBBCCAQVENSbP8LAp/exec";
+  "https://script.google.com/macros/s/AKfycbw37rwT1_bq5PoYTLkW5RMPSrgKVAm_vXx1zTfmXui2Sy5r3IodivysGXiwuGWJ8jI5/exec";
 
 const ProductCard: React.FC<Props> = ({
   product,
@@ -52,6 +52,7 @@ const ProductCard: React.FC<Props> = ({
       message.error("Network or server error.");
     }
   };
+  
 
   return (
     <div className="product-card">
@@ -81,7 +82,9 @@ const ProductCard: React.FC<Props> = ({
             handleRatingChange(product.id, value); // always call this
           }}
         />
-
+       {/* <p>
+          <strong>Rating Count:</strong> {product.ratingCount}
+        </p> */}
         <Button
           type="link"
           onClick={() => onToggleExpand(product.id)}
@@ -91,7 +94,8 @@ const ProductCard: React.FC<Props> = ({
         </Button>
 
         <div className={`product-details ${isExpanded ? "expanded" : ""}`}>
-          <p>{product.description}</p>
+          <p>  <strong>Skin Type:</strong>{product.skinType}</p>
+          <p> <strong>Info:</strong>{product.description}</p>
         </div>
       </div>
     </div>

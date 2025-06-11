@@ -10,7 +10,9 @@ export interface Product {
   image: string;
   rating?: number;
   info: string;
-  isOpen?: boolean; // Նոր դաշտ՝ Cart-ի բաց լինելու համար
+  isOpen?: boolean;
+  skinType?: string;
+  ratingCount?: number;
 }
 
 interface ProductsState {
@@ -18,7 +20,7 @@ interface ProductsState {
   loading: boolean;
   error: string | null;
   searchTerm: string;
-  isOpen: boolean; // Ուղղվել է `false` արժեքից `boolean` տիպի
+  isOpen: boolean;
 }
 
 const initialState: ProductsState = {
@@ -47,6 +49,13 @@ const productsSlice = createSlice({
     setCartOpen: (state, action: PayloadAction<boolean>) => {
       state.isOpen = action.payload;
     },
+    updateProductRating: (state, action: PayloadAction<{ id: number; rating: number }>) => {
+      const { id, rating } = action.payload;
+      const product = state.products.find((p) => p.id === id);
+      if (product) {
+        product.rating = rating;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -56,7 +65,6 @@ const productsSlice = createSlice({
       })
       .addCase(loadProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.isOpen = true;
         state.products = action.payload;
       })
       .addCase(loadProducts.rejected, (state, action) => {
@@ -66,5 +74,11 @@ const productsSlice = createSlice({
   },
 });
 
-export const { setSearchTerm, toggleCart, setCartOpen } = productsSlice.actions;
+export const {
+  setSearchTerm,
+  toggleCart,
+  setCartOpen,
+  updateProductRating,
+} = productsSlice.actions;
+
 export default productsSlice.reducer;

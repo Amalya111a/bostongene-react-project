@@ -21,7 +21,9 @@ import {
   SendOutlined,
 } from "@ant-design/icons";
 import skinConditions from "../../services/apiConditions";
+import {useSelector} from "react-redux";
 import "./Conditions.css";
+import type {RootState} from "../../app/store";
 
 interface SkinCondition {
   id: number;
@@ -52,10 +54,13 @@ const Conditions: React.FC = () => {
   const [rarityFilter, setRarityFilter] = useState<"all" | "common" | "rare">("all");
   const [selectedCondition, setSelectedCondition] = useState<SkinCondition | null>(null);
   const [imgLoaded, setImgLoaded] = useState(false);
+  // @ts-ignore
+  const { isAuthenticated,  } = useSelector((state: RootState) => state.auth);
+
 
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
+  }, [favorites])
 
   const rarityMap = useMemo<Record<number, "rare" | "common">>(() => {
     const map: Record<number, "rare" | "common"> = {};
@@ -109,7 +114,7 @@ const Conditions: React.FC = () => {
       <div className="header-row">
         <h1>Skin Conditions</h1>
         <Space>
-          <Button
+          {isAuthenticated && ( <Button
             type={showFavoritesOnly ? "primary" : "default"}
             icon={<StarFilled />}
             onClick={() => {
@@ -118,7 +123,7 @@ const Conditions: React.FC = () => {
             }}
           >
             {showFavoritesOnly ? "Show All" : "Favorites"}
-          </Button>
+          </Button>)}
           <Select
             value={rarityFilter}
             onChange={(v) => {
@@ -159,8 +164,7 @@ const Conditions: React.FC = () => {
                   <Tooltip
                     title={favorites.includes(cond.id) ? "Remove from favorites" : "Add to favorites"}
                   >
-                    {favorites.includes(cond.id) ? (
-                      <StarFilled
+                    {isAuthenticated &&( favorites.includes(cond.id) ? (<StarFilled
                         className="favorite-icon"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -175,7 +179,7 @@ const Conditions: React.FC = () => {
                           toggleFavorite(cond.id);
                         }}
                       />
-                    )}
+                    ))}
                   </Tooltip>
                   <span className={`rarity-badge ${rarityMap[cond.id]}`}>
                     {rarityMap[cond.id][0].toUpperCase() + rarityMap[cond.id].slice(1)}
