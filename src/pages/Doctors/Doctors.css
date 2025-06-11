@@ -1,0 +1,150 @@
+/* src/pages/Doctors.css */
+
+.doctors-page {
+  position: relative;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  min-height: 100vh;
+  border-radius: 8px;
+  /* background-color: #14532d9c; */
+  color: #fff;
+  overflow: hidden;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+.search-input {
+  border-radius: 12px;
+  background: rgba(20, 83, 45, 0.411); /* translucent green */
+  border: 1.5px solid rgba(166, 215, 133, 0.5);
+  color: #d1e7c2;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 12px 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.search-input:hover,
+.search-input:focus,
+.search-input:active {
+  border-color: #A6D785;
+  box-shadow:
+    0 0 12px 3px #A6D785,
+    inset 0 -2px 10px #C3E199;
+  background: rgba(26, 103, 56, 0.85);
+  color: #f0f8e9;
+}
+
+.search-input input {
+  /* background-color: transparent !important; */
+  /* color: #d1e7c2 !important; */
+  font-weight: 600;
+  font-size: 16px;
+  border: none !important;
+  padding: 0;
+}
+
+.search-input input::placeholder {
+  color: #b0cca0;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Clear icon color */
+.search-input .ant-input-clear-icon {
+  color: #A6D785;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.search-input .ant-input-clear-icon:hover {
+  color: #e6f1df;
+}
+
+
+/* Doctor card styles */
+.doctor-card {
+  cursor: pointer;
+  background-color: #14532D;
+  padding: 16px;
+  border-radius: 8px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #e6f1df; /* lighter green */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.doctor-card:hover {
+  background-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* Search input with custom styles */
+.search-input {
+  border-radius: 6px;
+  background-color: #1E4620;
+  color: #d1e7c2;
+  border: 1px solid #2E6B3C;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.search-input:hover,
+.search-input:focus,
+.search-input:active {
+  border-color: #A6D785;
+  box-shadow: 0 0 8px #A6D785;
+  background-color: #244D27;
+  color: #f0f8e9;
+}
+
+.search-input input {
+  background-color: transparent !important;
+  color: #d1e7c2 !important;
+}
+
+.search-input::placeholder {
+  color: #a3b59c;
+  opacity: 1;
+}
+
+/* Drawer custom styles */
+.doctor-drawer .ant-drawer-content-wrapper {
+  background-color: #1E4620;
+  color: #e6f1df;
+}
+
+.doctor-drawer .ant-drawer-header-title {
+  color: #d1e7c2;
+}
+
+.doctor-drawer p {
+  margin-bottom: 10px;
+  color: #c7dbb8;
+}
+
+.doctor-drawer .ant-rate-star-full,
+.doctor-drawer .ant-rate-star-half {
+  color: #a6d785;
+}
+
+.ant-pagination-item-active {
+  background-color: #A6D785 !important;
+  border-color: #A6D785 !important;
+  color: #14532D !important;
+}
+
+.ant-pagination-item:hover {
+  border-color: #A6D785 !important;
+  color: #A6D785 !important;
+}
