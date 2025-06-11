@@ -1,10 +1,7 @@
 import React from "react";
 import { Typography, Row, Col, Card, Avatar } from "antd";
 
-import {
-  UserOutlined,
-  MedicineBoxOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, MedicineBoxOutlined } from "@ant-design/icons";
 
 import { bestDoctors } from "./bestDoctors";
 
@@ -108,9 +105,6 @@ const DoctorsSection = () => {
               >
                 {doc.specialty}
               </Text>
-              <MedicineBoxOutlined
-                style={{ fontSize: 24, color: "#1B4D3E", marginBottom: 12 }}
-              />
               <Text
                 style={{
                   fontSize: 14,

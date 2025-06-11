@@ -1,4 +1,3 @@
-// src/app/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import clinicReducer from '../features/clinics/clinicSlice';
 import authReducer from '../features/auth/authSlice'; // This is correct
@@ -10,7 +9,7 @@ import cartReducer from '../features/cart/cartSlice';
 export const store = configureStore({
   reducer: {
     clinics: clinicReducer,
-    auth: authReducer, // Correctly mapped
+    auth: authReducer, 
     doctors: doctorsReducer,
     products: productsReducer,
     appointments: appointmentReducer,

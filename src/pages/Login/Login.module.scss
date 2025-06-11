@@ -1,46 +1,136 @@
-// .wrapper {
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     flex-direction: column;
-//     gap: 10px;
-//     height: 100vh;
-//     width: 100%;
-// }
+:root {
+  --main-green: #14532D;
+  --main-green-light: #1E7F3E;
+  --background: #E9F0E6;
+  --input-border: #2D6A3F;
+  --input-focus-shadow: rgba(20, 83, 45, 0.5);
+}
 
-
-// .item {
-//     display: flex;
-//     gap: 5px;
-//     flex-direction: column;
-//     min-width: 350px;
-//     span {
-//         text-align: start;
-//     }
-// }
 .wrapper {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 24px;
+  max-width: 420px;
+  margin: 80px auto 40px;
+  padding: 3rem 2.5rem;
+  background-color: var(--background);
+  box-shadow: 0 12px 30px rgba(20, 83, 45, 0.2);
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 28px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--main-green);
+  position: relative;
+  z-index: 1;
 }
 
 .item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+}
+
+.item > span {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--main-green);
+}
+
+/* Consistent input styles for both text and password inputs */
+.ant-input,
+.ant-input-password {
+  border-radius: 12px !important;
+  border: 2px solid var(--input-border) !important;
+  font-size: 1.15rem !important;
+  padding: 14px 16px !important;
+  box-sizing: border-box !important;
+  height: 48px !important;
+  line-height: normal !important;
+  display: block !important;
+}
+
+/* Wrapper for password input to ensure height matches */
+.ant-input-affix-wrapper {
+  height: 48px !important;
+  padding: 0 16px !important;
+  border-radius: 12px !important;
+  box-sizing: border-box !important;
+  border: 2px solid var(--input-border) !important;
+}
+
+.ant-input-password {
+  padding-right: 50px !important; /* Space for the eye icon */
+}
+
+/* Style the eye icon inside password input */
+.ant-input-password-icon {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  height: 20px !important;
+  width: 20px !important;
+}
+
+.ant-input:focus,
+.ant-input-password:focus,
+.ant-input-affix-wrapper:focus {
+  border-color: var(--main-green-light) !important;
+  box-shadow: 0 0 10px var(--input-focus-shadow) !important;
 }
 
 .actions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 20px;
+  margin-top: 2rem;
+}
+
+.actions .ant-btn-primary {
+  background-color: var(--main-green);
+  border-color: var(--main-green);
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 14px 0;
+  border-radius: 12px;
+  transition: background-color 0.35s ease;
+  box-shadow: 0 4px 10px rgba(20, 83, 45, 0.25);
+}
+
+.actions .ant-btn-primary:hover,
+.actions .ant-btn-primary:focus {
+  background-color: var(--main-green-light);
+  border-color: var(--main-green-light);
+  box-shadow: 0 6px 14px rgba(20, 83, 45, 0.35);
 }
 
 .signup {
   text-align: center;
-  font-size: 14px;
+  font-size: 15px;
+  color: var(--main-green);
+  font-weight: 600;
+}
+
+.signup span {
+  margin-right: 0.6rem;
+}
+
+.ant-btn-link {
+  color: var(--main-green-light);
+  font-weight: 700;
+}
+
+.ant-btn-link:hover {
+  color: var(--main-green);
+  text-decoration: underline;
+}
+
+/* FOOTER CSS */
+.footer {
+  margin-top: auto; /* Push footer to bottom */
+  padding: 1.5rem 0;
+  background-color: var(--main-green);
+  color: white;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 -4px 10px rgba(20, 83, 45, 0.3);
+  user-select: none;
 }

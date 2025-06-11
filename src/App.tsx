@@ -47,13 +47,13 @@ const App = () => {
 
   // Once authentication status is known, render the main app
   return (
-    <>
-      <Navbar /> {/* Navbar will now use Redux to check auth status */}
-      <div>
-        <AppRoutes />
-      </div>
-      <AppFooter />
-    </>
+   <div className="app-container">
+    <Navbar />
+    <main className="main-content">
+      <AppRoutes />
+    </main>
+    <AppFooter />
+  </div>
   );
 };
 
