@@ -1,20 +1,16 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchProducts } from "../../services/productService";
 
-export const getProducts = createAsyncThunk("products/fetchAll", async () => {
-  const data = await fetchProducts();
-  return data;
-});
-
-interface Product {
+export interface Product {
   id: number;
   title: string;
   description: string;
   price: number;
-  image: string;
   category: string;
+  image: string;
   rating?: number;
-  info: String;
+  info: string;
+  isOpen?: boolean; // Նոր դաշտ՝ Cart-ի բաց լինելու համար
 }
 
 interface ProductsState {
@@ -22,6 +18,7 @@ interface ProductsState {
   loading: boolean;
   error: string | null;
   searchTerm: string;
+  isOpen: boolean; // Ուղղվել է `false` արժեքից `boolean` տիպի
 }
 
 const initialState: ProductsState = {
@@ -29,33 +26,45 @@ const initialState: ProductsState = {
   loading: false,
   error: null,
   searchTerm: "",
+  isOpen: false,
 };
+
+export const loadProducts = createAsyncThunk("products/loadProducts", async () => {
+  const products = await fetchProducts();
+  return products;
+});
 
 const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    setSearchTerm(state, action) {
+    setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
+    },
+    toggleCart: (state) => {
+      state.isOpen = !state.isOpen;
+    },
+    setCartOpen: (state, action: PayloadAction<boolean>) => {
+      state.isOpen = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getProducts.pending, (state) => {
+      .addCase(loadProducts.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getProducts.fulfilled, (state, action) => {
+      .addCase(loadProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload as Product[];
+        state.isOpen = true;
+        state.products = action.payload;
       })
-      .addCase(getProducts.rejected, (state) => {
+      .addCase(loadProducts.rejected, (state, action) => {
         state.loading = false;
-        state.error = "Failed to fetch products";
+        state.error = action.error.message || "Failed to load products";
       });
   },
 });
 
-export const { setSearchTerm } = productsSlice.actions;
-
+export const { setSearchTerm, toggleCart, setCartOpen } = productsSlice.actions;
 export default productsSlice.reducer;
