@@ -24,22 +24,36 @@ export const fetchCart = createAsyncThunk<CartItem[], string>(
   'cart/fetchCart',
   async (userId) => {
     const res = await axios.get(`${GOOGLE_SHEET_URL}?userId=${userId}`);
+    console.log(res);
     return res.data;
   }
 );
 
 // ✅ POST - Add item to cart
 export const addToCart = createAsyncThunk<CartItem, CartItem>(
-  'cart/addToCart',
-  async ({ userId, productId, quantity }) => {
-    const res = await axios.post(GOOGLE_SHEET_URL, {
-      userId,
-      productId,
-      quantity,
-    });
-    return res.data; // Return the added item
-  }
+    'cart/addToCart',
+    async ({ userId, productId, quantity }, { rejectWithValue }) => {
+      try {
+        const res = await fetch(GOOGLE_SHEET_URL, {
+          method: 'POST',
+          body: JSON.stringify({userId, productId, quantity}),
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          console.error('Server error:', text);
+          return rejectWithValue({ error: 'Failed to add to cart' });
+        }
+
+        const data = await res.json();
+        return data;
+      } catch (err) {
+        console.error('Fetch failed:', err);
+        return rejectWithValue({ error: 'Network error' });
+      }
+    }
 );
+
 
 // ✅ DELETE - Remove item from cart
 export const deleteCartItem = createAsyncThunk<void, { userId: string; productId: string }>(
