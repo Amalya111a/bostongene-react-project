@@ -88,7 +88,7 @@ const Doctors = () => {
         }
     };
 
-    // 🔍 Filtering logic
+
     const filteredDoctors = doctors.filter((doctor) =>
         `${doctor.name} ${doctor.surname} ${doctor.specialty} ${doctor.workplace}`
             .toLowerCase()
@@ -156,7 +156,7 @@ const Doctors = () => {
                 />
 
                 <List
-                    grid={{ gutter: 16, column: 3 }}
+                    grid={{ gutter:16, column: 4, }}
                     dataSource={filteredDoctors}
                     renderItem={(doctor) => (
                         <List.Item key={doctor.id}>
@@ -167,7 +167,7 @@ const Doctors = () => {
                                     backgroundColor: "rgba(255,255,255,0.1)",
                                     padding: 16,
                                     borderRadius: 8,
-                                    height: "100%",
+                                    height: "350px",
                                     display: "flex",
                                     flexDirection: "column",
                                     alignItems: "center",
