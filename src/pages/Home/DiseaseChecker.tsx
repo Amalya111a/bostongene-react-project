@@ -49,7 +49,7 @@ Medical Dermatology, Cosmetic Dermatology, Pediatric Dermatology, Geriatric Derm
     setSelectedSkinType(null);
 
     try {
-      const response = await axios.post("http://localhost:3000/ask", {
+      const response = await axios.post("https://bostongene-react-project.onrender.com", {
         question,
       });
       const answer = response.data.answer || "";

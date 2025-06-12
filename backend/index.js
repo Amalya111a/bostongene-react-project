@@ -7,9 +7,7 @@ const askRouter = require('./routes/ask');
 
 const app = express();
 
-app.use(cors({
-  origin: process.env.VITE_API_URL || '*',
-}));
+app.use(cors()); 
 
 app.use(morgan('combined'));
 app.use(express.json());
