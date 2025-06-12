@@ -13,7 +13,7 @@ const Appointment = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const doctor = location.state?.doctor;
-  const unavaibleTimes = fetch(DOCTOR_API_URL)
+  //const unavaibleTimes = fetch(DOCTOR_API_URL)
 
   const [loading, setLoading] = useState(false);
   const onFinish = async (values: any) => {
@@ -28,7 +28,7 @@ const Appointment = () => {
     };
     try {
       setLoading(true);
-      // await submitAppointment(payload);
+      await submitAppointment(payload);
       message.success("Appointment booked!");
       navigate("/doctors");
     }catch(err) {
