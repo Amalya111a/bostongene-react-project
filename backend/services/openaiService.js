@@ -2,7 +2,7 @@ const axios = require('axios');
 const { openaiApiKey } = require('../config');
 
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
-const MODEL = 'gpt-4'; // можно заменить на 'gpt-4' при наличии доступа
+const MODEL = 'gpt-3.5-turbo'; 
 
 async function askQuestion(question) {
   if (!openaiApiKey) {
