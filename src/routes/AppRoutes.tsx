@@ -17,8 +17,8 @@ const AppRoutes = () => (
     <Route path="/" element={<Home />} />
     <Route path="/home" element={<Home />} />  {/* add this */}
     <Route path="/doctors" element={<Doctors />} />
-    <Route path="/appointment" element={<Appointment />} />
-      <Route path="/appointmentPage" element={<AppointmentsPage/>}/>
+      <Route path="/appointment" element={<AppointmentsPage />} />
+      <Route path="/appointmentPage" element={<Appointment/>}/>
     <Route path="/Products" element={<Products />} />
     <Route path="/Conditions" element={<Conditions />} />
     <Route path="/Clinics" element={<Clinics />} />

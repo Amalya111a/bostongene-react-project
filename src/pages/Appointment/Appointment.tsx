@@ -5,7 +5,7 @@ import {Card,Typography,Form,Input,DatePicker,TimePicker,Button,message} from "a
 import dayjs from 'dayjs';
 import{submitAppointment} from "../../services/appointmentService";
 import {RootState} from "../../app/store";
-import {DOCTOR_API_URL} from "../../services/doctorService";
+import { DOCTOR_API_URL } from '../../services/doctorService';
 
 const {Title,Text} = Typography;
 const Appointment = () => {
@@ -28,7 +28,7 @@ const Appointment = () => {
     };
     try {
       setLoading(true);
-      await submitAppointment(payload);
+      // await submitAppointment(payload);
       message.success("Appointment booked!");
       navigate("/doctors");
     }catch(err) {

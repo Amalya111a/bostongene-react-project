@@ -13,7 +13,7 @@ const { Text, Title } = Typography;
 const AppFooter: React.FC = () => {
   return (
     <Footer style={footerStyle}>
-      <Title level={4} style={{ color: '#d1f7e1', marginBottom: 7 }}>
+      <Title level={3} style={{ color: '#d1f7e1', marginBottom: 7 }}>
         Stay Connected with Skin & Health
       </Title>
 

@@ -8,4 +8,3 @@ export const fetchDoctorsThunk = createAsyncThunk<
 >("doctors/fetchDoctors", async ({ page, pageSize }) => {
     return await fetchDoctors(page, pageSize);
 });
-

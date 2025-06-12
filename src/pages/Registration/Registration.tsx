@@ -1,180 +1,189 @@
-// src/pages/Registration.tsx
 import React, { useState } from "react";
-import { Input, Button, message } from "antd";
+import { Form, Input, Button, message, Typography } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 
-import { auth } from "../../firebase"; // No longer need 'db' if not using Firestore for profiles
+import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-// import { doc, setDoc } from "firebase/firestore"; // Remove Firestore imports if not used
 
-import styles from "./Registration.module.scss";
+const { Text } = Typography;
 
 export default function Registration() {
-  const [form, setForm] = useState({
-    username: "", // You still capture this in the form, but it won't be stored in Firestore by this page.
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const onFinish = async (values: any) => {
+    const { username, email, password, confirmPassword } = values;
 
-  const handleRegister = async () => {
-    // Basic client-side validation
-    if (!form.username || !form.email || !form.password || !form.confirmPassword) {
-      message.warning("Please fill in all fields.");
-      return;
-    }
-
-    if (form.password !== form.confirmPassword) {
+    if (password !== confirmPassword) {
       message.error("Passwords do not match!");
       return;
     }
 
-    setLoading(true); // Start loading state
-    console.log("Registration process started...");
-
+    setLoading(true);
     try {
-      console.log("Attempting to create user with email:", form.email);
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password
-      );
-      // const user = userCredential.user; // If not using user.uid for Firestore, this line is not strictly needed here
-      console.log("User created successfully in Firebase Auth. UID:", userCredential.user.uid);
-
-      // --- REMOVED FIRESTORE setDoc CALL ---
-      // If you don't need to store username/email in Firestore, remove this block:
-      /*
-      console.log("Attempting to set user document in Firestore for UID:", user.uid);
-      await setDoc(doc(db, "users", user.uid), {
-        username: form.username,
-        email: form.email,
-        createdAt: new Date().toISOString(),
-      });
-      console.log("User document successfully written to Firestore.");
-      */
-      // --- END REMOVED BLOCK ---
-
-
+      await createUserWithEmailAndPassword(auth, email, password);
       message.success("Registration successful! Redirecting to login...");
-      console.log("Attempting to navigate to /login...");
       navigate("/login");
-      console.log("Navigation to /login initiated.");
-
     } catch (error: any) {
-      console.error("Registration failed:", error); // Log the full error object
-      let errorMessage = "An unknown error occurred during registration.";
-
+      let errorMessage = "Registration failed.";
       if (error.code) {
-        // Firebase Auth specific errors
         switch (error.code) {
-          case 'auth/email-already-in-use':
-            errorMessage = "This email is already in use. Please try another or log in.";
+          case "auth/email-already-in-use":
+            errorMessage = "Email is already in use.";
             break;
-          case 'auth/invalid-email':
-            errorMessage = "The email address is not valid.";
+          case "auth/invalid-email":
+            errorMessage = "Invalid email address.";
             break;
-          case 'auth/weak-password':
-            errorMessage = "The password is too weak. Please use at least 6 characters.";
+          case "auth/weak-password":
+            errorMessage = "Weak password. Use at least 6 characters.";
             break;
-          // 'permission-denied' case is no longer relevant if setDoc is removed
           default:
-            errorMessage = `Firebase error: ${error.message}`;
-            break;
+            errorMessage = error.message || errorMessage;
         }
-      } else if (error.message) {
-        // Other types of errors (e.g., network, or non-Firebase specific issues)
-        errorMessage = `Error: ${error.message}`;
       }
-
       message.error(errorMessage);
-
     } finally {
-      setLoading(false); // Ensure loading state is reset
-      console.log("Registration process finished (loading state reset).");
+      setLoading(false);
     }
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.item}>
-        <span>Username:</span>
-        <Input
+    <div
+      style={{
+        maxWidth: 420,
+        margin: "80px auto 40px",
+        padding: "3rem 2.5rem",
+        backgroundColor: "#D1E7CE",
+        boxShadow: "0 12px 30px rgba(20, 83, 45, 0.4)",
+        borderRadius: 0, // No border-radius
+      }}
+    >
+      <Form
+        name="registration"
+        layout="vertical"
+        onFinish={onFinish}
+        autoComplete="off"
+      >
+        <Form.Item
+          label={
+            <Text strong style={{ color: "#14532D" }}>
+              Username
+            </Text>
+          }
           name="username"
-          value={form.username}
-          onChange={handleChange}
-          placeholder="Enter your username"
-          disabled={loading}
-        />
-      </div>
-
-      <div className={styles.item}>
-        <span>Email:</span>
-        <Input
-          type="email"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="Enter your email"
-          disabled={loading}
-        />
-      </div>
-
-      <div className={styles.item}>
-        <span>Password:</span>
-        <Input.Password
-          name="password"
-          value={form.password}
-          onChange={handleChange}
-          placeholder="Create a password"
-          iconRender={(visible) =>
-            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-          }
-          disabled={loading}
-        />
-      </div>
-
-      <div className={styles.item}>
-        <span>Confirm Password:</span>
-        <Input.Password
-          name="confirmPassword"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          placeholder="Confirm your password"
-          iconRender={(visible) =>
-            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-          }
-          disabled={loading}
-        />
-      </div>
-
-      <div className={styles.actions}>
-        <Button
-          type="primary"
-          block
-          onClick={handleRegister}
-          loading={loading}
-          disabled={loading}
+          rules={[{ required: true, message: "Please enter your username" }]}
         >
-          Sign Up
-        </Button>
+          <Input placeholder="Enter your username" />
+        </Form.Item>
 
-        <div className={styles.signup}>
-          <span>Already have an account?</span>{" "}
+        <Form.Item
+          label={
+            <Text strong style={{ color: "#14532D" }}>
+              Email
+            </Text>
+          }
+          name="email"
+          rules={[
+            { required: true, message: "Please enter your email" },
+            { type: "email", message: "Please enter a valid email" },
+          ]}
+        >
+          <Input type="email" placeholder="Enter your email" />
+        </Form.Item>
+
+        <Form.Item
+          label={
+            <Text strong style={{ color: "#14532D" }}>
+              Password
+            </Text>
+          }
+          name="password"
+          rules={[{ required: true, message: "Please create a password" }]}
+          hasFeedback
+        >
+          <Input.Password
+            placeholder="Create a password"
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+          />
+        </Form.Item>
+
+        <Form.Item
+          label={
+            <Text strong style={{ color: "#14532D" }}>
+              Confirm Password
+            </Text>
+          }
+          name="confirmPassword"
+          dependencies={["password"]}
+          hasFeedback
+          rules={[
+            { required: true, message: "Please confirm your password" },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("password") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject("Passwords do not match!");
+              },
+            }),
+          ]}
+        >
+          <Input.Password
+            placeholder="Confirm your password"
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            block
+            loading={loading}
+            style={{
+              backgroundColor: "#1E7F3E",
+              borderColor: "#14532D",
+              borderRadius: "15px",
+              fontWeight: 700,
+              fontSize: "1.2rem",
+              boxShadow: "0 4px 10px rgba(20, 83, 45, 0.4)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#1E7F3E";
+              e.currentTarget.style.borderColor = "#1E7F3E";
+              e.currentTarget.style.boxShadow =
+                "0 6px 14px rgba(20, 83, 45, 0.6)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#14532D";
+              e.currentTarget.style.borderColor = "#14532D";
+              e.currentTarget.style.boxShadow =
+                "0 4px 10px rgba(20, 83, 45, 0.4)";
+            }}
+          >
+            Sign Up
+          </Button>
+        </Form.Item>
+
+        <Form.Item style={{ textAlign: "center" }}>
+          <span style={{ color: "#14532D", fontWeight: 600, fontSize: 15 }}>
+            Already have an account?{" "}
+          </span>
           <Link to="/login">
-            <Button type="link" disabled={loading}>
+            <Button
+              type="link"
+              style={{ color: "#1E7F3E", fontWeight: 700, padding: 0 }}
+            >
               Log In
             </Button>
           </Link>
-        </div>
-      </div>
+        </Form.Item>
+      </Form>
     </div>
   );
 }
