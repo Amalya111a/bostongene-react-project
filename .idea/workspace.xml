@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fc938401-8262-4fdb-a31f-f39ca1aa9148" name="Changes" comment="">
+    <list default="true" id="fc938401-8262-4fdb-a31f-f39ca1aa9148" name="Changes" comment="resolve changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Appointment/Appointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Appointment/Appointment.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Conditions/Conditions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Conditions/Conditions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Doctors/Doctors.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Doctors/Doctors.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/AppRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AppRoutes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/appointmentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/appointmentService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,21 +27,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/mnact/Desktop/bostongene-react-project",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\mnact\\Desktop\\bostongene-react-project\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/mnact/Desktop/bostongene-react-project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\mnact\\Desktop\\bostongene-react-project\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\mnact\Desktop\bostongene-react-project\src\pages\Appointment" />
@@ -64,9 +65,30 @@
       <workItem from="1748369367779" duration="36046000" />
       <workItem from="1748756388776" duration="7620000" />
     </task>
+    <task id="LOCAL-00001" summary="resolve changes">
+      <option name="closed" value="true" />
+      <created>1749715008351</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1749715008351</updated>
+    </task>
+    <task id="LOCAL-00002" summary="resolve changes">
+      <option name="closed" value="true" />
+      <created>1749715206783</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1749715206783</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="resolve changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="resolve changes" />
   </component>
 </project>

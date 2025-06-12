@@ -22,7 +22,7 @@ import {
   Button,
 } from "antd";
 import ProductCard from "./ProductCard";
-import Cart from "../../features/cart/Cart";
+// import Cart from "../../features/cart/Cart";
 
 const { Option } = Select;
 
@@ -226,7 +226,6 @@ const Products = () => {
         visible={drawerVisible}
         width={350}
       >
-        <Cart />
         <Button
           onClick={() => setDrawerVisible(false)}
           block

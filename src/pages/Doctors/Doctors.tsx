@@ -84,7 +84,7 @@ const Doctors = () => {
       const data = await response.json();
 
       if (data.success) {
-        alert("Rating submitted!");
+       // alert("Rating submitted!");
         dispatch(fetchDoctorsThunk({ page: 1, pageSize: 1000 }));
         closeDrawer();
       } else {

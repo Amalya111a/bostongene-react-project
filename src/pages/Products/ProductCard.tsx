@@ -26,9 +26,9 @@ const ProductCard: React.FC<Props> = ({
     try {
       const response = await fetch(proxyUrl + scriptUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
         body: JSON.stringify({ productId, rating }),
       });
 
