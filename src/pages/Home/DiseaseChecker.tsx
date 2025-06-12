@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Form, Input, Select, Button, Typography, message, Spin } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Products from "../Products/Products";
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
@@ -16,7 +17,9 @@ type FormValues = {
 };
 
 const DiseaseChecker: React.FC = () => {
+  const [specialty, setSpecialty] = useState<string | null>(null);
   const [form] = Form.useForm();
+   const [selectedSkinType, setSelectedSkinType] = useState<string | null>(null);;
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [specialtyRoute, setSpecialtyRoute] = useState<string | null>(null);
@@ -37,11 +40,13 @@ Then, in a new line, output the related doctor specialty and route as a JSON obj
 }
 Choose ONLY ONE specialty from this list: 
 Medical Dermatology, Cosmetic Dermatology, Pediatric Dermatology, Geriatric Dermatology, Surgical Dermatology, Mohs Surgery, Laser Dermatology, Dermatopathology, Immunodermatology, Allergic Contact Dermatitis, Photodermatology, Pigmentary Disorders, Hair and Scalp Dermatology, Nail Disorders, Acne and Rosacea Specialist, Psoriasis Specialist, Eczema and Atopic Dermatitis, Hidradenitis Suppurativa Specialist, Skin Cancer Dermatology, Actinic Keratosis Specialist, Dermato-oncology, Infectious Dermatology, Tropical Dermatology, Genodermatoses Specialist, Occupational Dermatology, Dermatoendocrinology, Dermatoepidemiology, Wound Healing Specialist, Scar Management Specialist, Burn Care Dermatology, Laser Hair Removal, Chemical Peel Therapy, Cryotherapy Specialist, Phototherapy Specialist, Microneedling and Dermarolling, Platelet-Rich Plasma (PRP) Therapy, Anti-aging Dermatology, Ethnic Skin Dermatology, Tattoo Removal Specialist, Botox and Fillers Specialist, Keratoderma Specialist, Hyperhidrosis Specialist, Urticaria and Hives Specialist, Drug Reaction Dermatology, Autoimmune Blistering Diseases, Cutaneous Lymphoma Specialist, Vascular Dermatology, Mucosal Dermatology, Neurodermatology, Teledermatology.
+
 `;
 
     setLoading(true);
     setResult(null);
     setSpecialtyRoute(null);
+    setSelectedSkinType(null);
 
     try {
       const response = await axios.post("http://localhost:3000/ask", {
@@ -65,19 +70,13 @@ Medical Dermatology, Cosmetic Dermatology, Pediatric Dermatology, Geriatric Derm
       setLoading(false);
     }
   };
-  
 
   // Navigate when button clicked
- const handleNavigate = () => {
-if (specialtyRoute) {
-  const url = new URL('http://dummy.com' + specialtyRoute);
-  const specialtyParam = url.searchParams.get('specialty') || '';
-
-  navigate(`/doctors?specialty=${encodeURIComponent(specialtyParam)}`);
-}
-
-};
-
+  const handleNavigate = () => {
+    if (specialtyRoute) {
+      navigate(specialtyRoute);
+    }
+  };
 
   return (
     <div
@@ -319,6 +318,7 @@ if (specialtyRoute) {
               )}
             </div>
           )}
+          
         </div>
       </div>
 
