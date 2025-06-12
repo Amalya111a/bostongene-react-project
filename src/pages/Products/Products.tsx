@@ -71,14 +71,24 @@ const Products = () => {
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleAddToCart = async (product: Product) => {
     try {
-      await dispatch(addToCart({ userId, productId: String(product.id), quantity: 1 }));
-      await dispatch(fetchCart(userId)); // Await to ensure cart is updated before opening drawer
+      await dispatch(
+        addToCart({
+          userId,
+          productId: String(product.id),
+          name: product.title,
+          price: product.price,
+          image: product.image,
+          quantity: 1,
+        })
+      );
+      await dispatch(fetchCart(userId));
       message.success("Added to cart!");
-      setDrawerVisible(true); // Open the cart drawer on the right side
+      setDrawerVisible(true);
     } catch (error) {
       message.error("Failed to add to cart.");
     }
   };
+  
   
   const [submittingRating, setSubmittingRating] = useState(false);
 
@@ -186,7 +196,12 @@ const handleRatingChange = async (productId: number, rating: number) => {
         visible={drawerVisible}
         width={350}
       >
-        <Cart />
+        <Cart
+  userId={userId}
+  visible={drawerVisible}
+  onClose={() => setDrawerVisible(false)}
+/>
+
         <Button onClick={() => setDrawerVisible(false)} block style={{ marginTop: "1rem" }}>
           Close Cart
         </Button>

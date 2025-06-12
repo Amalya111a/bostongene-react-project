@@ -1,7 +1,7 @@
 // src/features/cart/cartSlice.ts
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwW6n9WalkI6wq7DQjRVpzIJ82sUrEIUm1UkhIE6JG7Eos5Iv-cgxJJZN4iSaeg4yUI/exec';
 
 export interface CartItem {
@@ -34,9 +34,9 @@ export const addToCart = createAsyncThunk<CartItem, CartItem>(
     'cart/addToCart',
     async ({ userId, productId, quantity }, { rejectWithValue }) => {
       try {
-        const res = await fetch(GOOGLE_SHEET_URL, {
+        const res = await fetch(proxyUrl+GOOGLE_SHEET_URL, {
           method: 'POST',
-          body: JSON.stringify({userId, productId, quantity}),
+          body: JSON.stringify({action:"Add",userId, productId, quantity}),
         });
 
         if (!res.ok) {
@@ -56,24 +56,30 @@ export const addToCart = createAsyncThunk<CartItem, CartItem>(
 
 
 // ✅ DELETE - Remove item from cart
-export const deleteCartItem = createAsyncThunk<void, { userId: string; productId: string }>(
+export const deleteCartItem = createAsyncThunk<{ userId: string; productId: string }, { userId: string; productId: string }>(
   'cart/deleteCartItem',
   async ({ userId, productId }) => {
-    await axios.delete(`${GOOGLE_SHEET_URL}?userId=${userId}&productId=${productId}`);
+    await axios.post(proxyUrl + GOOGLE_SHEET_URL, {
+      action: 'delete',
+      userId,
+      productId,
+    });
+    return { userId, productId }; // 👈 return data to reducer
   }
 );
+
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // Load all items for the user
+    // Load all items for the user, but filter out items with quantity <= 0
     builder.addCase(fetchCart.fulfilled, (state, action: PayloadAction<CartItem[]>) => {
-      state.items = action.payload;
+      state.items = action.payload.filter(item => item.quantity > 0);
     });
 
-    // Append the added item to cart
+    // Append the added item to cart or update quantity
     builder.addCase(addToCart.fulfilled, (state, action: PayloadAction<CartItem>) => {
       const existingIndex = state.items.findIndex(
         item =>
@@ -82,21 +88,29 @@ const cartSlice = createSlice({
       );
 
       if (existingIndex !== -1) {
-        // If item already exists, update quantity
+        // If item exists, update quantity
         state.items[existingIndex].quantity += action.payload.quantity;
+
+        // Remove the item if quantity is 0 or less
+        if (state.items[existingIndex].quantity <= 0) {
+          state.items.splice(existingIndex, 1);
+        }
       } else {
-        // Otherwise, add new item
-        state.items.push(action.payload);
+        // Only add new item if quantity > 0
+        if (action.payload.quantity > 0) {
+          state.items.push(action.payload);
+        }
       }
     });
 
-    // Remove deleted item from the state
     builder.addCase(deleteCartItem.fulfilled, (state, action) => {
-      // Since deleteCartItem returns void, we filter based on last known input
-      // This logic is optional unless you manually track last deleted item
-      // Suggest refetching cart via dispatch(fetchCart(userId)) after deletion
+      const { userId, productId } = action.payload;
+      state.items = state.items.filter(item => !(item.userId === userId && item.productId === productId));
     });
+    
+    
   },
 });
+
 
 export default cartSlice.reducer;
