@@ -1,24 +1,16 @@
 // src/services/appointmentService.ts
-export async function submitAppointment(appointment: any) {
-  const response = await fetch("/api/appointments", {
+import {DOCTOR_API_URL} from "./doctorService";
+import type {Appointment} from "../features/appointments/appointmentsSlice";
+
+
+export const submitAppointment = async (payload: Appointment): Promise<void> => {
+  const response = await fetch(DOCTOR_API_URL,{
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(appointment),
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
-    throw new Error("Failed to submit appointment");
+    throw new Error("Failed to submit Appointment");
   }
+};
 
-  return response.json();
-}
-
-export async function getAppointments() {
-  const response = await fetch("/api/appointments");
-  if (!response.ok) {
-    throw new Error("Failed to fetch appointments");
-  }
-  return response.json();
-}

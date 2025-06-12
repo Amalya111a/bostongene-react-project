@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fc938401-8262-4fdb-a31f-f39ca1aa9148" name="Changes" comment="resolve changes" />
+    <list default="true" id="fc938401-8262-4fdb-a31f-f39ca1aa9148" name="Changes" comment="resolve changes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Doctors/Doctors.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Doctors/Doctors.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/AppRoutes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/AppRoutes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/appointmentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/appointmentService.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,7 +73,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749715008351</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="resolve changes">
+      <option name="closed" value="true" />
+      <created>1749715206783</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1749715206783</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
