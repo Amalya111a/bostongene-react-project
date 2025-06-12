@@ -1,6 +1,6 @@
 const express = require('express');
 const Joi = require('joi');
-const { askQuestion } = require('../services/geminiService');
+const { askQuestion } = require('../services/openaiService'); // заменено имя
 
 const router = express.Router();
 
