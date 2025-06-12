@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fc938401-8262-4fdb-a31f-f39ca1aa9148" name="Changes" comment="resolve changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Appointment/Appointment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Appointment/Appointment.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/appointmentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/appointmentService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
