@@ -1,46 +1,91 @@
-# Getting Started with Create React App
+Welcome to Skin&Health, an AI-powered medical-cosmetic web application designed to help users better understand their skin and receive personalized guidance.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+🧠 What it Does
+🔍 AI-Based Skin Analysis: Get instant suggestions based on your skin type and symptoms
 
-## Available Scripts
+🩺 Disease Checker: Identify potential skin conditions and get specialist recommendations
 
-In the project directory, you can run:
+👩‍⚕️ Find Doctors: Browse top dermatologists with ratings, bios, and appointment booking
 
-### `npm start`
+💄 Product Suggestions: AI recommends skin care products tailored to your needs
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+📅 Appointments: View and manage your doctor visits (only for logged-in users)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+🖼️ Main Features
+🏠 Home Page
+A central hub with access to services, doctors, AI checker, testimonials, and more — all in a clean green-themed UI.
 
-### `npm test`
+🧬 Conditions Page
+Interactive catalog of skin diseases:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Search by name
 
-### `npm run build`
+Filter by rarity (common/rare)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Add to favorites (🟢 only for authenticated users)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Modal with symptoms, treatment, and share buttons
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Data is saved via localStorage
 
-### `npm run eject`
+🧑‍⚕️ Doctors Page
+Lists real doctors fetched from server
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Filter by specialty
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Drawer with full info and rating system
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Appointment button (works for logged-in users)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+🏥 Clinics Page
+Clinics loaded from Google Sheets via CSV
 
-## Learn More
+Filter by category (e.g., Laser, Skin)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Search by name or address
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Displayed in adaptive cards
+
+🛍️ Products Page
+Dynamic shop of skin care products
+
+Category filters, search, sorting (price/rating)
+
+Add to cart (Drawer opens)
+
+Rating submission (via Google Apps Script)
+
+🔐 Authentication
+We use Firebase Authentication for login and registration.
+Only logged-in users can:
+
+Add conditions to favorites
+
+Submit product/doctor ratings
+
+Make doctor appointments
+
+View personal appointments
+
+🧑‍💻 Technologies Used
+React + TypeScript
+
+Redux Toolkit
+
+Ant Design
+
+Firebase (Auth)
+
+Google Sheets API (clinics & ratings)
+
+Moment.js (date formatting)
+
+PapaParse (CSV parsing)
+
+🌱 About Us
+We are a group of aspiring developers building our first full-stack application together.
+Skin&Health is more than a project — it's our first step into building intelligent, user-friendly web apps with real-world purpose.
+
+🙏 Thank You!
+This is a learning project and a demonstration of our teamwork, design skills, and technical growth.
+
