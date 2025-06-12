@@ -17,12 +17,11 @@ const AppRoutes = () => (
     <Route path="/" element={<Home />} />
     <Route path="/home" element={<Home />} />  {/* add this */}
     <Route path="/doctors" element={<Doctors />} />
-    <Route path="/appointment" element={<AppointmentsPage />} />
-      <Route path="/appointmentPage" element={<Appointment/>}/>
+    <Route path="/appointment" element={<Appointment />} />
+      <Route path="/appointmentPage" element={<AppointmentsPage/>}/>
     <Route path="/Products" element={<Products />} />
     <Route path="/Conditions" element={<Conditions />} />
     <Route path="/Clinics" element={<Clinics />} />
-    <Route path="/Registration" element={<Registration />} />
     <Route path="/Login" element={<Login />} />
     <Route path="/doctors" element={<Doctors />} />
   </Routes>

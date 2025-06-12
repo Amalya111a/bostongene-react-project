@@ -53,6 +53,7 @@ const App = () => {
       <AppRoutes />
     </main>
     <AppFooter />
+    
   </div>
   );
 };
