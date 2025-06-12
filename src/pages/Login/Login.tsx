@@ -2,7 +2,7 @@ import styles from "./Login.module.scss";
 import React, { useState } from "react";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Button, Input, message } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userLoggedIn } from "../../features/auth/authSlice";
 import { auth } from "../../firebase";
@@ -14,6 +14,9 @@ export default function Login() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const location=useLocation();
+    const from = location.state?.from || "/home";
+  const doctor = location.state?.doctor;
 
   const handleLogin = async () => {
     setLoading(true);
@@ -22,6 +25,12 @@ export default function Login() {
       dispatch(userLoggedIn(userCredential.user));
       message.success("Login successful!");
       navigate("/home");
+       // ✅ Հաջող login-ից հետո վերուղորդում ենք ըստ state-ի
+      if (doctor) {
+        navigate("/appointment", { state: { doctor } });
+      } else {
+        navigate(from);
+      }
     } catch (error: any) {
       let errorMessage = "Login failed: An unknown error occurred.";
       switch (error.code) {
