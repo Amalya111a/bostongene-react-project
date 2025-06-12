@@ -279,7 +279,7 @@ const Doctors = () => {
     </Button>
 
 <Button
-  onClick={() => navigate('/appointment', { state: { doctor: selectedDoctor } })}
+  onClick={() => navigate('/appointmentPage', { state: { doctor: selectedDoctor } })}
   style={{ marginTop: 12 }}
   block
 >
