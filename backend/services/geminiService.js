@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { geminiApiKey } = require('../config');
 
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent`;
 
 async function askQuestion(question) {
   if (!geminiApiKey) {
