@@ -6,6 +6,7 @@ import { loadProducts, setSearchTerm, Product } from "../../features/products/pr
 import { addToCart, fetchCart } from "../../features/cart/cartSlice";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { Col, Row, Spin, Alert, Select, Input, Pagination, message, Drawer, Button } from "antd";
+import { ShoppingCartOutlined } from "@ant-design/icons";
 import ProductCard from "./ProductCard";
 import Cart from "../../features/cart/Cart";
 
@@ -69,6 +70,7 @@ const Products = () => {
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const handlePageChange = (page: number) => setCurrentPage(page);
+  
   const handleAddToCart = async (product: Product) => {
     try {
       await dispatch(
@@ -88,46 +90,43 @@ const Products = () => {
       message.error("Failed to add to cart.");
     }
   };
-  
-  
+
   const [submittingRating, setSubmittingRating] = useState(false);
 
-const handleRatingChange = async (productId: number, rating: number) => {
-  if (rating === 0) {
-    message.warning("Please select a rating before submitting");
-    return;
-  }
-
-  setSubmittingRating(true);
-
-  try {
-    const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbw37rwT1_bq5PoYTLkW5RMPSrgKVAm_vXx1zTfmXui2Sy5r3IodivysGXiwuGWJ8jI5/exec",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId, rating }),
-      }
-    );
-
-    const text = await response.text();
-    const data = JSON.parse(text);
-
-    if (response.ok && data.success) {
-      message.success("Thanks for your rating!");
-      // Optionally reload products or update rating here
-      dispatch(loadProducts()); // Reload products to get updated ratings
-    } else {
-      message.error("Failed to submit rating: " + (data.message || "Unknown error"));
+  const handleRatingChange = async (productId: number, rating: number) => {
+    if (rating === 0) {
+      message.warning("Please select a rating before submitting");
+      return;
     }
-  } catch (error: any) {
-    message.error("Network error submitting rating: " + error.message);
-    console.error(error);
-  } finally {
-    setSubmittingRating(false);
-  }
-};
 
+    setSubmittingRating(true);
+
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbw37rwT1_bq5PoYTLkW5RMPSrgKVAm_vXx1zTfmXui2Sy5r3IodivysGXiwuGWJ8jI5/exec",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productId, rating }),
+        }
+      );
+
+      const text = await response.text();
+      const data = JSON.parse(text);
+
+      if (response.ok && data.success) {
+        message.success("Thanks for your rating!");
+        dispatch(loadProducts());
+      } else {
+        message.error("Failed to submit rating: " + (data.message || "Unknown error"));
+      }
+    } catch (error: any) {
+      message.error("Network error submitting rating: " + error.message);
+      console.error(error);
+    } finally {
+      setSubmittingRating(false);
+    }
+  };
 
   if (loading) return <Spin size="large" />;
   if (error) return <Alert message={error} type="error" />;
@@ -135,7 +134,17 @@ const handleRatingChange = async (productId: number, rating: number) => {
   return (
     <>
       <h2 style={{ marginBottom: 16 }}>Filter Products</h2>
-      <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: 24 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "1rem",
+          marginBottom: 24,
+          position: "relative",
+        }}
+      >
         <Select
           value={selectedCategory}
           style={{ width: 200 }}
@@ -164,6 +173,17 @@ const handleRatingChange = async (productId: number, rating: number) => {
           <Option value="priceDesc">Price: High to Low</Option>
           <Option value="ratingDesc">Rating: High to Low</Option>
         </Select>
+
+        {/* Cart button */}
+        <Button
+          type="primary"
+          shape="circle"
+          icon={<ShoppingCartOutlined />}
+          size="large"
+          onClick={() => setDrawerVisible(true)}
+          style={{ marginLeft: "auto" }}
+          aria-label="Open Cart"
+        />
       </div>
 
       <Row gutter={[16, 16]}>
@@ -190,22 +210,19 @@ const handleRatingChange = async (productId: number, rating: number) => {
       </div>
 
       <Drawer
-        title="Your Cart"
-        placement="right"
-        onClose={() => setDrawerVisible(false)}
-        visible={drawerVisible}
-        width={350}
-      >
-        <Cart
-  userId={userId}
-  visible={drawerVisible}
+  title="Your Cart"
+  placement="right"
   onClose={() => setDrawerVisible(false)}
-/>
+  open={drawerVisible}
+  width={350}
+>
+  <Cart userId={userId} />
 
-        <Button onClick={() => setDrawerVisible(false)} block style={{ marginTop: "1rem" }}>
-          Close Cart
-        </Button>
-      </Drawer>
+  <Button onClick={() => setDrawerVisible(false)} block style={{ marginTop: "1rem" }}>
+    Close Cart
+  </Button>
+</Drawer>
+
     </>
   );
 };
