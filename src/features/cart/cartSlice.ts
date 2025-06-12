@@ -1,14 +1,11 @@
-// src/features/cart/cartSlice.ts
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwW6n9WalkI6wq7DQjRVpzIJ82sUrEIUm1UkhIE6JG7Eos5Iv-cgxJJZN4iSaeg4yUI/exec';
+import { collection, doc, getDocs, setDoc, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
+import { db } from '../../firebase'; // путь к твоему firebase.ts
 
 export interface CartItem {
   userId: string;
   productId: string;
   quantity: number;
-  [key: string]: any;
 }
 
 interface CartState {
@@ -19,47 +16,37 @@ const initialState: CartState = {
   items: [],
 };
 
-// ✅ GET - Fetch user's cart
+// GET - Fetch user's cart
 export const fetchCart = createAsyncThunk<CartItem[], string>(
   'cart/fetchCart',
   async (userId) => {
-    const res = await axios.get(`${GOOGLE_SHEET_URL}?userId=${userId}`);
-    console.log(res);
-    return res.data;
+    const q = query(collection(db, 'cart'), where('userId', '==', userId));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => doc.data() as CartItem);
   }
 );
 
-// ✅ POST - Add item to cart
+// POST - Add or update item in cart
 export const addToCart = createAsyncThunk<CartItem, CartItem>(
-    'cart/addToCart',
-    async ({ userId, productId, quantity }, { rejectWithValue }) => {
-      try {
-        const res = await fetch(GOOGLE_SHEET_URL, {
-          method: 'POST',
-          body: JSON.stringify({userId, productId, quantity}),
-        });
-
-        if (!res.ok) {
-          const text = await res.text();
-          console.error('Server error:', text);
-          return rejectWithValue({ error: 'Failed to add to cart' });
-        }
-
-        const data = await res.json();
-        return data;
-      } catch (err) {
-        console.error('Fetch failed:', err);
-        return rejectWithValue({ error: 'Network error' });
-      }
+  'cart/addToCart',
+  async ({ userId, productId, quantity }, { rejectWithValue }) => {
+    try {
+      const docRef = doc(db, 'cart', `${userId}_${productId}`);
+      await setDoc(docRef, { userId, productId, quantity }, { merge: true });
+      return { userId, productId, quantity };
+    } catch (err) {
+      console.error(err);
+      return rejectWithValue({ error: 'Failed to update cart' });
     }
+  }
 );
 
-
-// ✅ DELETE - Remove item from cart
-export const deleteCartItem = createAsyncThunk<void, { userId: string; productId: string }>(
+// DELETE - Remove item from cart
+export const deleteCartItem = createAsyncThunk<{ userId: string; productId: string }, { userId: string; productId: string }>(
   'cart/deleteCartItem',
   async ({ userId, productId }) => {
-    await axios.delete(`${GOOGLE_SHEET_URL}?userId=${userId}&productId=${productId}`);
+    await deleteDoc(doc(db, 'cart', `${userId}_${productId}`));
+    return { userId, productId };
   }
 );
 
@@ -68,33 +55,20 @@ const cartSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // Load all items for the user
     builder.addCase(fetchCart.fulfilled, (state, action: PayloadAction<CartItem[]>) => {
-      state.items = action.payload;
+      state.items = action.payload.filter(item => item.quantity > 0);
     });
-
-    // Append the added item to cart
     builder.addCase(addToCart.fulfilled, (state, action: PayloadAction<CartItem>) => {
-      const existingIndex = state.items.findIndex(
-        item =>
-          item.userId === action.payload.userId &&
-          item.productId === action.payload.productId
-      );
-
-      if (existingIndex !== -1) {
-        // If item already exists, update quantity
-        state.items[existingIndex].quantity += action.payload.quantity;
+      const index = state.items.findIndex(i => i.userId === action.payload.userId && i.productId === action.payload.productId);
+      if (index >= 0) {
+        state.items[index] = action.payload;
       } else {
-        // Otherwise, add new item
         state.items.push(action.payload);
       }
     });
-
-    // Remove deleted item from the state
     builder.addCase(deleteCartItem.fulfilled, (state, action) => {
-      // Since deleteCartItem returns void, we filter based on last known input
-      // This logic is optional unless you manually track last deleted item
-      // Suggest refetching cart via dispatch(fetchCart(userId)) after deletion
+      const { userId, productId } = action.payload;
+      state.items = state.items.filter(item => !(item.userId === userId && item.productId === productId));
     });
   },
 });

@@ -11,7 +11,7 @@ type Props = {
   onRatingChange?: (id: number, rating: number) => void; // optional prop
 };
 
-const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+// const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 const scriptUrl =
   "https://script.google.com/macros/s/AKfycbw37rwT1_bq5PoYTLkW5RMPSrgKVAm_vXx1zTfmXui2Sy5r3IodivysGXiwuGWJ8jI5/exec";
 
@@ -24,11 +24,11 @@ const ProductCard: React.FC<Props> = ({
 }) => {
   const handleRatingChange = async (productId: number, rating: number) => {
     try {
-      const response = await fetch(proxyUrl + scriptUrl, {
+      const response = await fetch(scriptUrl, {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ productId, rating }),
       });
 
